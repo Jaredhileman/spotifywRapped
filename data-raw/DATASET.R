@@ -48,13 +48,8 @@ for (batch in offset_total) {
   saved_tracks <- dplyr::bind_rows(saved_tracks, curr_saved_tracks)
 }
 
-# Add energy & valence for each saved track and artist name
+# Get artist name
 for (i in 1:nrow(saved_tracks)) {
-  Sys.sleep(0.1)
-  track_id <- saved_tracks$track.id[i]
-  track_features <- spotifyr::get_track_audio_features(track_id, authorization = access_token)
-  saved_tracks$energy[i] <- track_features$energy
-  saved_tracks$valence[i] <- track_features$valence
   saved_tracks$artist[i] <- saved_tracks$track.artists[i][[1]]$name
 }
 
