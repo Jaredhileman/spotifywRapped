@@ -51,15 +51,11 @@ for (batch in offset_total) {
 # Get artist name
 for (i in 1:nrow(saved_tracks)) {
   saved_tracks$artist[i] <- saved_tracks$track.artists[i][[1]]$name
+  audio_features <- spotifyr::get_track_audio_features(saved_tracks$track.id[i],
+                                                       access_token = access_token)
+  saved_tracks$energy[i] <- audio_features$energy
+  saved_tracks$valence[i] <- audio_features$valence
 }
-
-
-
-
-# Save data
-
-
-
 
 
 # q: how to append data frames to the end of data frames in R
