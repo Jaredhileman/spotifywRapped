@@ -1,10 +1,18 @@
 
-#' @export
-print_graphic <- function(time, vibe, kind = "artists", filename = getwd()) {
 
-  background_path <- system.file("vibes",
-                                 paste0(kind, "_", time, "_", vibe, ".png"),
-                            package = "spotifywRapped")
+
+#' @export
+my_top_five <- function(name, time, vibe, kind = "artists", saveto = getwd()) {
+
+  if (!is.character(time) || !is.character(vibe) || !is.character(kind) ||
+      !is.character(name)) {
+    stop("time, vibe, and kind must be character strings")
+  }
+
+  background_relative <- paste0(kind, "_", time, "_", vibe, ".png")
+  background_path <- system.file("vibes", background_relative,
+                                 package = "spotifywRapped")
+
   print(background_path)
   background <- magick::image_read(background_path)
   if (kind == "artists") {
@@ -37,33 +45,41 @@ print_graphic <- function(time, vibe, kind = "artists", filename = getwd()) {
     label = graphdata$name[2:5]
   )
 
-  file_name <- paste0("top_", kind, "_", time, "_", vibe, ".png")
+  file_name <- paste0(name, ".png")
   print(file_name)
-  postables_path <- paste0("C:/Users/jared/Downloads/", file_name)
+  postables_path <- file.path(saveto, file_name)
   print(postables_path)
 
-  png(filename, width = 1080, height = 1920)
+  png(postables_path, width = 1080, height = 1920)
 
   par(mar = c(0, 0, 0, 0))  # Set all margins to zero
   plot(0, type = "n", xlim = c(0, 1), ylim = c(0, 1), xaxt = 'n', yaxt = 'n',
        xlab = '', ylab = '', main = '', bty = 'n', ann = FALSE)
 
+  for (label in box_coordinates$label) {
+    if (nchar(label) > 30) {
+      new_label <- paste0(substr(label, 1, 30), "...")
+      box_coordinates$label[box_coordinates$label == label] <- new_label
+    }
+  }
 
   # Overlay the raster image
   rasterImage(background, 0, 0, 1, 1) # Adjust these coordinates based on where you want the image within the plot area
   rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
               (1920 - 500)/1920)
+  textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
+  text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
+       labels = graphdata$name[1], col = textcolor, cex = 3, adj = 0.5)
   text(x = box_coordinates$x, y = box_coordinates$y,
-       labels = box_coordinates$label, col = "black", cex = 3, adj = 0)
+       labels = box_coordinates$label, col = textcolor, cex = 3, adj = 0)
 
   # Close the graphics device
   dev.off()
-
 }
 
 # image_path <- "C:/Users/jared/Downloads/songs_long_soft.png"
 # image <- magick::image_read(image_path)
-#
+#labels = box_coordinates$label
 # url1 <- top_artists$images[1][[1]]$url[[1]]
 # artist_image <- magick::image_read(url1)
 # artist_image <- magick::image_resize(artist_image, "530x530")
