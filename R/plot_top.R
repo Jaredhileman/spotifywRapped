@@ -16,13 +16,15 @@
 #' one of "bright", "dark", "neon", or "soft".
 #' @param kind A character string specifying whether the data is for artists or
 #' tracks. Must be one of "artists" or "songs".
+#' @param dataset A data frame containing the user's top artists or tracks.
+#' Defaults to package data.
 #' @return A .png file containing a visualization of the user's top five artists
 #' or tracksdo
 #'
 
 #' @export
 my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
-                        kind = "artists") {
+                        kind = "artists", dataset = data.frame()) {
 
   if (!is.character(time) || !is.character(vibe) || !is.character(kind) ||
       !is.character(name)) {
@@ -55,25 +57,27 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
 
   print(background_path)
   background <- magick::image_read(background_path)
-  if (kind == "artists") {
-    if (time == "long") {
-      graphdata <- spotifywRapped::top_artists_longterm
-    } else if (time == "medium") {
-      graphdata <- spotifywRapped::top_artists_mediumterm
-    } else if (time == "short") {
-      graphdata <- spotifywRapped::top_artists_shortterm
-    }
-    image_url <- graphdata$images[1][[1]]$url[[1]]
+  if (length(dataset) == 0) {
+    if (kind == "artists") {
+      if (time == "long") {
+        dataset <- spotifywRapped::top_artists_longterm
+      } else if (time == "medium") {
+        dataset <- spotifywRapped::top_artists_mediumterm
+      } else if (time == "short") {
+        dataset <- spotifywRapped::top_artists_shortterm
+      }
+      image_url <- dataset$images[1][[1]]$url[[1]]
 
-  } else {
-    if (time == "long") {
-      graphdata <- spotifywRapped::top_tracks_longterm
-    } else if (time == "medium") {
-      graphdata <- spotifywRapped::top_tracks_mediumterm
-    } else if (time == "short") {
-      graphdata <- spotifywRapped::top_tracks_shortterm
+    } else {
+      if (time == "long") {
+        dataset <- spotifywRapped::top_tracks_longterm
+      } else if (time == "medium") {
+        dataset <- spotifywRapped::top_tracks_mediumterm
+      } else if (time == "short") {
+        dataset <- spotifywRapped::top_tracks_shortterm
+      }
+      image_url <- dataset$album.images[1][[1]]$url[[1]]
     }
-    image_url <- graphdata$album.images[1][[1]]$url[[1]]
   }
 
   mini_image <- magick::image_read(image_url)
@@ -82,7 +86,7 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
   box_coordinates <- data.frame(
     x = rep(400, times = 4) / 1080,
     y = (1920 - c(1140, 1270, 1400, 1530) - 42) / 1920,
-    label = graphdata$name[2:5]
+    label = dataset$name[2:5]
   )
 
   file_name <- paste0(name, ".png")
@@ -109,7 +113,7 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
               (1920 - 500)/1920)
   textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
   text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
-       labels = graphdata$name[1], col = textcolor, cex = 3, adj = 0.5)
+       labels = dataset$name[1], col = textcolor, cex = 3, adj = 0.5)
   text(x = box_coordinates$x, y = box_coordinates$y,
        labels = box_coordinates$label, col = textcolor, cex = 3, adj = 0)
 

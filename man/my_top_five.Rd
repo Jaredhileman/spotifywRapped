@@ -4,7 +4,14 @@
 \alias{my_top_five}
 \title{Visualize your top five artists or tracks}
 \usage{
-my_top_five(name = "Untitled", saveto = getwd(), time, vibe, kind = "artists")
+my_top_five(
+  name = "Untitled",
+  saveto = getwd(),
+  time,
+  vibe,
+  kind = "artists",
+  dataset = data.frame()
+)
 }
 \arguments{
 \item{name}{A character string specifying the name of the graphic.}
@@ -20,10 +27,13 @@ one of "bright", "dark", "neon", or "soft".}
 
 \item{kind}{A character string specifying whether the data is for artists or
 tracks. Must be one of "artists" or "songs".}
+
+\item{dataset}{A data frame containing the user's top artists or tracks.
+Defaults to package data.}
 }
 \value{
 A .png file containing a visualization of the user's top five artists
-or tracks
+or tracksdo
 }
 \description{
 This function creates a visualization of a user's top five artists or tracks

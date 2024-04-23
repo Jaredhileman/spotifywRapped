@@ -1,8 +1,8 @@
 ---
-title: "spotifywRapped: Unwrapped!"
+title: "SpotifywRapped: Unwrapped!"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{spotifywRapped: Unwrapped!}
+  %\VignetteIndexEntry{SpotifywRapped: Unwrapped!}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
