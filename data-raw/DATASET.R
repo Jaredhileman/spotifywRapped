@@ -38,7 +38,7 @@ offset_length <- ceiling(spotifyr::get_my_saved_tracks(include_meta_info = TRUE,
 offset_total <- (seq(offset_length) - 1) * 50
 
 ## Obtain saved tracks
-saved_tracks<- data.frame()
+saved_tracks <- data.frame()
 for (batch in offset_total) {
   curr_saved_tracks <- spotifyr::get_my_saved_tracks(limit = 50,
                                                       offset = batch,                                                      authorization = authorization)
@@ -111,3 +111,23 @@ for (batch in offset) {
 # usethis::use_data(saved_tracks, overwrite = TRUE)
 usethis::use_data(top_artists_shortterm, overwrite = TRUE)
 usethis::use_data(top_tracks_shortterm, overwrite = TRUE)
+
+###################################
+# Saving energy/valence data for top songs
+st <- spotifywRapped::saved_tracks
+
+for (i in 1:nrow(st)) {
+  if (i %% 100 == 0) {
+    print(paste0("Sleeping... ", i %/% 100))
+    Sys.sleep(30)
+  }
+  track_id <- st$track.id[i]
+  track_features <- spotifyr::get_track_audio_features(track_id,
+                                                       authorization = access_token)
+  st$energy[i] <- track_features$energy
+  st$valence[i] <- track_features$valence
+}
+
+saved_tracks <- st
+
+usethis::use_data(saved_tracks, overwrite = TRUE)
