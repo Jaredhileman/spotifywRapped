@@ -1,13 +1,53 @@
 
-
+#' Visualize your top five artists or tracks
+#'
+#' This function creates a visualization of a user's top five artists or tracks
+#' based on the vibe specified and whether the data is long-term, medium-term,
+#' or short-term (all time, last 6 months, last 4 weeks, respectively).
+#' The user specifies both the name and storage location of the graphic, which
+#' is saved as a .png file.
+#'
+#' @param name A character string specifying the name of the graphic.
+#' @param saveto A character string specifying the directory where the graphic
+#' should be saved. Defaults to the current working directory.
+#' @param time A character string specifying the time frame for the data. Must
+#' be one of "long", "medium", or "short".
+#' @param vibe A character string specifying the vibe of the graphic. Must be
+#' one of "bright", "dark", "neon", or "soft".
+#' @param kind A character string specifying whether the data is for artists or
+#' tracks. Must be one of "artists" or "songs".
+#' @return A .png file containing a visualization of the user's top five artists
+#' or tracksdo
+#'
 
 #' @export
-my_top_five <- function(name, time, vibe, kind = "artists", saveto = getwd()) {
+my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
+                        kind = "artists") {
 
   if (!is.character(time) || !is.character(vibe) || !is.character(kind) ||
       !is.character(name)) {
-    stop("time, vibe, and kind must be character strings")
+    stop("name, time, vibe, and kind must be character strings")
   }
+
+  if (!(time %in% c("long", "medium", "short"))) {
+    stop("time must be one of 'long', 'medium', or 'short'")
+  }
+
+  if (!(kind %in% c("artists", "songs"))) {
+    stop("kind must be one of 'artists' or 'songs'")
+  }
+
+  if (!(vibe %in% c("bright", "dark", "neon", "soft"))) {
+    stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
+  }
+
+  if (name == "") {
+    warning("name cannot be an empty string, defaulted to 'Untitled'")
+  }
+
+
+
+
 
   background_relative <- paste0(kind, "_", time, "_", vibe, ".png")
   background_path <- system.file("vibes", background_relative,
@@ -64,7 +104,7 @@ my_top_five <- function(name, time, vibe, kind = "artists", saveto = getwd()) {
   }
 
   # Overlay the raster image
-  rasterImage(background, 0, 0, 1, 1) # Adjust these coordinates based on where you want the image within the plot area
+  rasterImage(background, 0, 0, 1, 1)
   rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
               (1920 - 500)/1920)
   textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
@@ -76,36 +116,3 @@ my_top_five <- function(name, time, vibe, kind = "artists", saveto = getwd()) {
   # Close the graphics device
   dev.off()
 }
-
-# image_path <- "C:/Users/jared/Downloads/songs_long_soft.png"
-# image <- magick::image_read(image_path)
-#labels = box_coordinates$label
-# url1 <- top_artists$images[1][[1]]$url[[1]]
-# artist_image <- magick::image_read(url1)
-# artist_image <- magick::image_resize(artist_image, "530x530")
-#
-# box_coordinates <- data.frame(
-#   x = rep(400, times = 4) / 1080,
-#   y = (1920 - c(1140, 1270, 1400, 1530) - 42) / 1920,
-#   label = top_artists$name[2:5]
-# )
-#
-#
-# png("my_plot_with_image.png", width = 1080, height = 1920)
-#
-#
-# par(mar = c(0, 0, 0, 0))  # Set all margins to zero
-# plot(0, type = "n", xlim = c(0, 1), ylim = c(0, 1), xaxt = 'n', yaxt = 'n',
-#      xlab = '', ylab = '', main = '', bty = 'n', ann = FALSE)
-#
-#
-# # Overlay the raster image
-# rasterImage(image, 0, 0, 1, 1) # Adjust these coordinates based on where you want the image within the plot area
-# rasterImage(artist_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080, (1920 - 500)/1920)
-# text(x = box_coordinates$x, y = box_coordinates$y,
-#      labels = box_coordinates$label, col = "black", cex = 3, adj = 0)
-#
-# # Close the graphics device
-# dev.off()
-
-
