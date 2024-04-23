@@ -18,13 +18,12 @@
 #' tracks. Must be one of "artists" or "songs".
 #' @param dataset A data frame containing the user's top artists or tracks.
 #' Defaults to package data.
-#' @return A .png file containing a visualization of the user's top five artists
-#' or tracksdo
+#' @return The file path of the .png file.
 #'
 
 #' @export
-my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
-                        kind = "artists", dataset = data.frame()) {
+my_top_five <- function(time, vibe, kind = "artists", name = "Untitled",
+                        saveto = getwd(), dataset = data.frame()) {
 
   if (!is.character(time) || !is.character(vibe) || !is.character(kind) ||
       !is.character(name)) {
@@ -48,14 +47,10 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
   }
 
 
-
-
-
   background_relative <- paste0(kind, "_", time, "_", vibe, ".png")
   background_path <- system.file("vibes", background_relative,
                                  package = "spotifywRapped")
 
-  print(background_path)
   background <- magick::image_read(background_path)
   if (length(dataset) == 0) {
     if (kind == "artists") {
@@ -90,9 +85,7 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
   )
 
   file_name <- paste0(name, ".png")
-  print(file_name)
   postables_path <- file.path(saveto, file_name)
-  print(postables_path)
 
   png(postables_path, width = 1080, height = 1920)
 
@@ -119,4 +112,6 @@ my_top_five <- function(name = "Untitled", saveto = getwd(), time, vibe,
 
   # Close the graphics device
   dev.off()
+
+  return(postables_path)
 }
