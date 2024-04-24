@@ -1,5 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+<<<<<<< Updated upstream
 ^data-raw$
 ^\.httr-oauth$
 ^LICENSE\.md$
+=======
+^\.httr-oauth$
+>>>>>>> Stashed changes

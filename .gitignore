@@ -3,4 +3,7 @@
 .RData
 .Ruserdata
 .httr-oauth
+<<<<<<< Updated upstream
 inst/doc
+=======
+>>>>>>> Stashed changes
