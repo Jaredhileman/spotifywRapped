@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #' Artist Frequency Bar Graph
 #'
 #' Create a bar graph demonstrating the top 10 artists, and how many songs of
