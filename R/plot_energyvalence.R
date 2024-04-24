@@ -31,6 +31,8 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
 
   labels <- c("Sad Boy Hours", "Chilling", "Hype Mood", "Energetic Despair")
 
+
+
   sad_count <- sum(data$energy <= 0.5 & data$valence <= 0.5)
   chill_count <- sum(data$energy <= 0.5 & data$valence > 0.5)
   hype_count <- sum(data$energy > 0.5 & data$valence > 0.5)
@@ -62,7 +64,7 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
     dot_color <- "#42a593"
     background_color <- "#1e1d1d"
     text_line_color <- "white"
-    background_image <- system.file("vibes", "enval_soft.png",
+    background_image <- system.file("vibes", "enval_bright.png",
                                     package = "spotifywRapped")
   }
 
@@ -94,12 +96,14 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                                               col = text_line_color)),
                                xmin = 0.5, xmax = 0.5, ymax = -0.7)
 
-  grDevices::png(filename = file_name,
+  enval_plot
+
+  png(filename = file_name,
                  width = 1080, height = 1920, units = "px")
 
   cowplot::ggdraw() +
     cowplot::draw_image(background_image) +
     cowplot::draw_plot(enval_plot)
 
-  grDevices::dev.off()
+  dev.off()
 }
