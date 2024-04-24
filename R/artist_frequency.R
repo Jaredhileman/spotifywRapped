@@ -18,8 +18,8 @@ soft_p = c('#66545e', '#eda990', '#aa6f73', '#a39193', '#f6e0b5')
 y_max <- ceiling(max(new_df$Freq) / 5) * 5
 new_df$Var1 <- as.character(new_df$Var1)
 for (Var1 in new_df$Var1) {
-  if (!is.na(Var1) && nchar(Var1) > 10) {
-    new_label <- as.factor(paste0(substr(Var1, 1, 30), "..."))
+  if (!is.na(Var1) && nchar(Var1) > 20) {
+    new_label <- paste0(substr(Var1, 1, 20), "...")
     new_df$Var1[new_df$Var1 == Var1] <- new_label
   }
 }
