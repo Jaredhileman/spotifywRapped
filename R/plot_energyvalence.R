@@ -23,9 +23,9 @@
 #'
 #'
 #' @export
-my_energy_valence <- function (data = spotifywRapped::saved_tracks,
-                               vibe = "neon", name = "untitled",
-                               saveto = getwd()) {
+my_energy_valence <- function(data = spotifywRapped::saved_tracks,
+                              vibe = "neon", name = "untitled",
+                              saveto = getwd()) {
 
   file_name <- file.path(saveto, paste0(name, ".png"))
 
@@ -48,7 +48,7 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
     text_line_color <- "black"
     background_image <- system.file("vibes", "enval_soft.png",
                                     package = "spotifywRapped")
-  } else if(vibe == "neutral") {
+  } else if (vibe == "neutral") {
     dot_color <- "#664228"
     background_color <- "white"
     text_line_color <- "black"
@@ -68,7 +68,7 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                     package = "spotifywRapped")
   }
 
-  enval_plot <- ggplot2::ggplot(data, ggplot2::aes(x = energy, y = valence)) +
+  enval_plot <- ggplot2::ggplot(data, ggplot2::aes(x = data$energy, y = data$valence)) +
     ggplot2::geom_point(size = 5, color = dot_color) +
     ggplot2::theme(plot.margin = ggplot2::margin(345, 84, 663, 84, "points"),
                    plot.background = ggplot2::element_rect(fill = "transparent"),
@@ -78,17 +78,21 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                    axis.title = ggplot2::element_blank()) +
     ggplot2::scale_x_continuous(breaks = 0.5) +
     ggplot2::scale_y_continuous(breaks = 0.5) +
-    ggplot2::annotate('text', x = .15, y = 1,label="Energetic Despair", size = 12,
+    ggplot2::annotate("text",
+                      x = .15,
+                      y = 1,
+                      label = "Energetic Despair",
+                      size = 12,
                       col = text_line_color) +
-    ggplot2::annotate('text', x = .9, y = 1, label = "Hype Mood", size = 12,
+    ggplot2::annotate("text", x = .9, y = 1, label = "Hype Mood", size = 12,
                       col = text_line_color) +
-    ggplot2::annotate('text', x = .95, y = 0, label = "Chilling", size = 12,
+    ggplot2::annotate("text", x = .95, y = 0, label = "Chilling", size = 12,
                       col = text_line_color) +
-    ggplot2::annotate('text', x = .1, y = 0, label = "Sad Boy Hours", size = 12,
+    ggplot2::annotate("text", x = .1, y = 0, label = "Sad Boy Hours", size = 12,
                       col = text_line_color) +
-    ggplot2::annotate('text', x = 0.99, y = .55, label = "Energy", size = 9,
+    ggplot2::annotate("text", x = 0.99, y = .55, label = "Energy", size = 9,
                       col = text_line_color, angle = 90) +
-    ggplot2::annotate('text', x = 0.95, y = .48, label = "Valence", size = 9,
+    ggplot2::annotate("text", x = 0.95, y = .48, label = "Valence", size = 9,
                       col = text_line_color) +
     ggplot2::coord_cartesian(clip = "off") +
     ggplot2::annotation_custom(grid::textGrob(vibe_label,
