@@ -38,7 +38,7 @@ my_top_five <- function(time, vibe, kind = "artists", name = "Untitled",
     stop("kind must be one of 'artists' or 'songs'")
   }
 
-  if (!(vibe %in% c("bright", "dark", "neon", "soft"))) {
+  if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
     stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
   }
 

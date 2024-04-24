@@ -24,21 +24,71 @@ The energy vs valence plot gives a visual summary of the general "vibe" a user t
 
 The function takes the user's listening data, vibe choice, filename, and save location as arguments. It outputs a .png file to the save location of the user's choice and returns the image's file path.
 
+Parameter options:
+- `data`: the user's saved track data
+- `vibe`: "soft", "neon", "neutral", or "bright"
+- `name`: the name of the output file
+- `saveto`: the directory to save the output file
+
 ```{r enval}
 library(spotifywRapped)
 
 temp_save <- tempdir()
-energy_valence_demo <- my_energy_valence(saveto = temp_save, vibe = "neon", name = "enval_neon")
+energy_valence_demo <- my_energy_valence(data = spotifywRapped::saved_tracks, 
+                                         saveto = temp_save, vibe = "bright", 
+                                         name = "enval_neon")
 
 ```
 
 Here is an example of the energy vs valence plot:
 
-![](`r energy_valence_demo`)
+![](`r energy_valence_demo`){width=450px height=800px}
+
+## Top Artists & Tracks Graphics
+
+Yet another fascinating visual implemented into the spotifywRapped package is the `my_top_five` function graphics library. This visualization shows the user's top five most frequently listened to artists and tracks over all time, the past 6 months, or the past 4 weeks. 
+
+Parameter options:
+- `time`: "long", "medium", or "short"
+- `vibe`: "soft", "neon", "neutral", or "bright"
+- `kind`: "artists" or "songs"
+- `name`: the name of the output file
+- `saveto`: the directory to save the output file
+- `dataset`: the user's listening data
+
+The function will return the file path to the generated .png file.
+
+
+```{r top_artists}
+my_top_artists <- my_top_five(time = "long", vibe = "neutral", kind = "artists",
+                              name = "My_Top_Artists_longterm", 
+                              saveto = temp_save)
+```
+Here is an example of the top artist graphic from long-term listening history:
+![](`r my_top_artists`){width=450px height=800px}
+
+Similarly, here is an example of the top tracks graphic from short-term listening:
 
 ```{r, echo = FALSE}
+my_top_tracks <- my_top_five(time = "short", vibe = "neon", kind = "songs",
+                             name = "My_Top_Tracks_shortterm", 
+                             saveto = temp_save)
 ```
+![](`r my_top_tracks`){width=450px height=800px}
+
+## Artist Frequency
+
+Next, we have the `artist_frequency` function, which generates a bar graph of the user's most frequently listened to artists from the user's saved tracks. The function takes the user's saved tracks, category, and vibe as arguments. The function will return the file path to the generated .png file.
+
+
 
 ```{r, echo = FALSE}
 
 ```
+
+## Wordcloud
+
+Finally, we have the `wordcloud` function, which generates a word cloud of the user's most frequently listened to artists from the user's saved tracks. The function takes the user's saved tracks, category, and vibe as arguments. The function will return the file path to the generated .png file.
+
+```{r, echo = FALSE}
+
