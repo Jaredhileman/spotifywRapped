@@ -106,7 +106,7 @@ Parameter options:
 
 
 
-```{r artist_frequency_top, eval = FALSE}
+```{r artist_frequency_top}
 
 artist_frequency_top_demo <- artist_frequency(category = "top", vibe = "soft", 
                                          name = "Top Tracks Artist Frequency", 
@@ -118,18 +118,18 @@ artist_frequency_top_demo <- artist_frequency(category = "top", vibe = "soft",
 
 Here is an example of the artist frequency graphic generated for the user's top tracks:
 
+![](`r artist_frequency_top_demo`){width=450px height=800px}
 
+```{r artist_frequency_saved}
 
-```{r artist_frequency_saved, eval = FALSE}
-
-artist_frequency_top_demo <- artist_frequency(category = "saved", vibe = "neon", 
+artist_frequency_saved_demo <- artist_frequency(category = "saved", vibe = "neon", 
                                          name = "Saved Tracks Artist Frequency", 
                                          saveto = temp_save)
 ```
 
 ...and again for the user's saved tracks:
 
-
+![](`r artist_frequency_saved_demo`){width=450px height=800px}
 
 ## Wordcloud - Frequented Artists
 
@@ -145,15 +145,26 @@ Parameter options:
 
 - `saveto`: the directory to save the output file
 
-```{r wordcloud}
+The wordcloud option is still under development. Please check back on future updates for this feature!
 
-wordcloud_demo <- frequent_listened_artists(category = "long", data = spotifywRapped::saved_tracks, vibe = "neutral", name = "Frequent Artists Wordcloud", saveto = temp_save)
+## Datasets
 
-```
+The spotifywRapped package comes equipped with several example datasets that users can use to test the package's functions. These datasets were pulled from one of the author's personal Spotify account. The datasets are as follows:
 
-Here is an example of the word cloud generated for the user's most frequently listened to artists:
+- `saved_tracks`: a dataset containing the user's saved tracks from all time
 
-![](`r wordcloud_demo`){width=450px height=800px}
+- `top_tracks_longterm`: a dataset containing the user's top tracks from all time
+
+- `top_tracks_mediumterm`: a dataset containing the user's top tracks from the past 6 months
+
+- `top_tracks_shortterm`: a dataset containing the user's top tracks from the past 4 weeks
+
+- `top_artists_longterm`: a dataset containing the user's top artists from all time
+
+- `top_artists_mediumterm`: a dataset containing the user's top artists from the past 6 months
+
+- `top_artists_shortterm`: a dataset containing the user's top artists from the past 4 weeks
+
 
 ## Limitations
 
