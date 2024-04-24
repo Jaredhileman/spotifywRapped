@@ -21,6 +21,8 @@
 #' @return The file path of the .png file.
 #'
 #'
+#' @import magick
+#' @import dplyr
 #' @export
 my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
                         saveto = getwd(), dataset = data.frame()) {
@@ -101,8 +103,8 @@ my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
   }
 
   # Overlay the raster image
-  rasterImage(background, 0, 0, 1, 1)
-  rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
+  graphics::rasterImage(background, 0, 0, 1, 1)
+  graphics::rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
               (1920 - 500)/1920)
   textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
   text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
