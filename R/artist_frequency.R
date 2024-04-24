@@ -1,42 +1,9 @@
-library(spotifyr)
-library(tidyverse)
-library(forcats)
-
 NumberArtists <- function(category = "saved") {
   stopifnot(category == "saved" || category == "top")
 }
 
 
-#set-up
-id <- '1c68aad85abf44c09d1345783463851b'
-secret <- '9e7fc07f6d0e4fa0b5d34122905a4766'
-
-access_token <- get_spotify_access_token(id, secret)
-authorization <- get_spotify_authorization_code(client_id = id,
-                                                client_secret = secret,
-                                                scope = c("user-top-read",
-                                                          "user-library-read"))
-
-#saved tracks data frame
-saved_tracks <- get_my_saved_tracks(authorization = authorization)
-saved_tracks <- rbind(saved_tracks,
-                      get_my_saved_tracks(authorization = authorization))
-reduce(saved_tracks$track.artists)
-
-# top tracks data frame
-top_tracks <- get_my_top_artists_or_tracks(type = "tracks",
-                                           time_range = "short_term",
-                                           authorization = authorization)
-top_tracks <- rbind(top_tracks,
-                    get_my_top_artists_or_tracks(type = "tracks",
-                                                 offset = 20,
-                                                 time_range = "short_term",
-                                                 authorization = authorization))
-top_tracks <- rbind(top_tracks,
-                    get_my_top_artists_or_tracks(type = "tracks",
-                                                 offset = 40,
-                                                 time_range = "short_term",
-                                                 authorization = authorization))
+saved_tracks <- spotifywRapped::saved_tracks
 
 # graphing
 occurences <- table(unlist(saved_tracks$artist))
