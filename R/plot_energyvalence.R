@@ -27,7 +27,7 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                vibe = "neon", name = "untitled",
                                saveto = getwd()) {
 
-  file_name <- paste0(saveto, "/", name, ".png")
+  file_name <- file.path(saveto, paste0(name, ".png"))
 
   labels <- c("Sad Boy Hours", "Chilling", "Hype Mood", "Energetic Despair")
 

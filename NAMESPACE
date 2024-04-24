@@ -3,7 +3,6 @@
 export(my_energy_valence)
 export(my_top_five)
 import(ggplot2)
-import(gridExtra)
 importFrom(cowplot,draw_image)
 importFrom(cowplot,draw_plot)
 importFrom(cowplot,ggdraw)
