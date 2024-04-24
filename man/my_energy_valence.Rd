@@ -25,7 +25,7 @@ Defaults to "untitled".}
 Defaults to working directory.}
 }
 \value{
-a PNG file correctly sized for posting as an Instagram Story.
+the file path to the generated .png file
 }
 \description{
 \code{my_energy_valence} generates a PNG file that contains background colors and

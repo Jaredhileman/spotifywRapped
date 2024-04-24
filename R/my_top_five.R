@@ -14,31 +14,31 @@
 #' be one of "long", "medium", or "short".
 #' @param vibe A character string specifying the vibe of the graphic. Must be
 #' one of "bright", "dark", "neon", or "soft".
-#' @param kind A character string specifying whether the data is for artists or
+#' @param category A character string specifying whether the data is for artists or
 #' tracks. Must be one of "artists" or "songs".
 #' @param dataset A data frame containing the user's top artists or tracks.
 #' Defaults to package data.
 #' @return The file path of the .png file.
 #'
-
+#'
 #' @export
-my_top_five <- function(time, vibe, kind = "artists", name = "Untitled",
+my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
                         saveto = getwd(), dataset = data.frame()) {
 
-  if (!is.character(time) || !is.character(vibe) || !is.character(kind) ||
+  if (!is.character(time) || !is.character(vibe) || !is.character(category) ||
       !is.character(name)) {
-    stop("name, time, vibe, and kind must be character strings")
+    stop("name, time, vibe, and category must be character strings")
   }
 
   if (!(time %in% c("long", "medium", "short"))) {
     stop("time must be one of 'long', 'medium', or 'short'")
   }
 
-  if (!(kind %in% c("artists", "songs"))) {
-    stop("kind must be one of 'artists' or 'songs'")
+  if (!(category %in% c("artists", "songs"))) {
+    stop("category must be one of 'artists' or 'songs'")
   }
 
-  if (!(vibe %in% c("bright", "dark", "neon", "soft"))) {
+  if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
     stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
   }
 
@@ -47,13 +47,13 @@ my_top_five <- function(time, vibe, kind = "artists", name = "Untitled",
   }
 
 
-  background_relative <- paste0(kind, "_", time, "_", vibe, ".png")
+  background_relative <- paste0(category, "_", time, "_", vibe, ".png")
   background_path <- system.file("vibes", background_relative,
                                  package = "spotifywRapped")
 
   background <- magick::image_read(background_path)
   if (length(dataset) == 0) {
-    if (kind == "artists") {
+    if (category == "artists") {
       if (time == "long") {
         dataset <- spotifywRapped::top_artists_longterm
       } else if (time == "medium") {

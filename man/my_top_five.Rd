@@ -7,7 +7,7 @@
 my_top_five(
   time,
   vibe,
-  kind = "artists",
+  category = "artists",
   name = "Untitled",
   saveto = getwd(),
   dataset = data.frame()
@@ -20,7 +20,7 @@ be one of "long", "medium", or "short".}
 \item{vibe}{A character string specifying the vibe of the graphic. Must be
 one of "bright", "dark", "neon", or "soft".}
 
-\item{kind}{A character string specifying whether the data is for artists or
+\item{category}{A character string specifying whether the data is for artists or
 tracks. Must be one of "artists" or "songs".}
 
 \item{name}{A character string specifying the name of the graphic.}

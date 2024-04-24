@@ -8,26 +8,26 @@ authorization <- spotifyr::get_spotify_authorization_code(ID, secret,
 
 
 
-# Obtain top medium_term artists
+# Obtain top long_term artists
 offset = seq(0, 950, 50)
 top_artists_longterm <- data.frame()
 for (batch in offset) {
   curr_artists <- spotifyr::get_my_top_artists_or_tracks(type = "artists",
                                                          limit = 50,
                                                          offset = batch,
-                                                         time_range = "medium_term",
+                                                         time_range = "long_term",
                                                          authorization = authorization)
   top_artists_longterm <- dplyr::bind_rows(top_artists_longterm, curr_artists)
 }
 
 
-# Obtain top medium_term tracks
+# Obtain top long_term tracks
 top_tracks_longterm <- data.frame()
 for (batch in offset) {
   curr_tracks <- spotifyr::get_my_top_artists_or_tracks(type = "tracks",
                                                         limit = 50,
                                                         offset = batch,
-                                                        time_range = "medium_term",
+                                                        time_range = "long_term",
                                                         authorization = authorization)
   top_tracks_longterm <- dplyr::bind_rows(top_tracks_longterm, curr_tracks)
 }
@@ -46,9 +46,10 @@ for (batch in offset_total) {
 }
 
 
-usethis::use_data(saved_tracks, overwrite = TRUE)
+
 usethis::use_data(top_artists_longterm, overwrite = TRUE)
 usethis::use_data(top_tracks_longterm, overwrite = TRUE)
+usethis::use_data(saved_tracks, overwrite = TRUE)
 
 ###################################
 ###################################
@@ -97,7 +98,7 @@ for (batch in offset) {
 }
 
 
-# Obtain top medium_term tracks
+# Obtain top short_term tracks
 top_tracks_shortterm <- data.frame()
 for (batch in offset) {
   curr_tracks <- spotifyr::get_my_top_artists_or_tracks(type = "tracks",
@@ -131,3 +132,31 @@ for (i in 1:nrow(st)) {
 saved_tracks <- st
 
 usethis::use_data(saved_tracks, overwrite = TRUE)
+
+
+###################################
+# Adding artists to long, med, short term tracks
+lt_tracks <- spotifywRapped::top_tracks_longterm
+mt_tracks <- spotifywRapped::top_tracks_mediumterm
+st_tracks <- spotifywRapped::top_tracks_shortterm
+
+
+for (i in seq_len(nrow(lt_tracks))) {
+  lt_tracks$artist[i] <- lt_tracks$artists[[i]]$name[[1]]
+}
+
+for (i in seq_len(nrow(mt_tracks))) {
+  lt_tracks$artist[i] <- lt_tracks$artists[[i]]$name[[1]]
+}
+
+for (i in seq_len(nrow(st_tracks))) {
+  lt_tracks$artist[i] <- lt_tracks$artists[[i]]$name[[1]]
+}
+
+top_tracks_longterm <- lt_tracks
+top_tracks_mediumterm <- mt_tracks
+top_tracks_shortterm <- st_tracks
+
+usethis::use_data(top_tracks_longterm, overwrite = TRUE)
+usethis::use_data(top_tracks_mediumterm, overwrite = TRUE)
+usethis::use_data(top_tracks_shortterm, overwrite = TRUE)
