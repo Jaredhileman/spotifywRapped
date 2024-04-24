@@ -131,6 +131,8 @@ artist_frequency_saved_demo <- artist_frequency(category = "saved", vibe = "neon
 
 ![](`r artist_frequency_saved_demo`){width=450px height=800px}
 
+These graphics still need maintenance and will be released with full templates in the next release!
+
 ## Wordcloud - Frequented Artists
 
 Finally, we have the `wordcloud` function, which generates a word cloud of the top 20 of the user's most frequently listened to artists from the user's saved tracks. The function takes the user's saved tracks, vibe, file name, and save location as arguments. The function will return the file path to the generated .png file.

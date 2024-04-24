@@ -14,8 +14,8 @@
 #' be one of "long", "medium", or "short".
 #' @param vibe A character string specifying the vibe of the graphic. Must be
 #' one of "bright", "dark", "neon", or "soft".
-#' @param category A character string specifying whether the data is for artists or
-#' tracks. Must be one of "artists" or "songs".
+#' @param category A character string specifying whether the data is for artists
+#' or tracks. Must be one of "artists" or "songs".
 #' @param dataset A data frame containing the user's top artists or tracks.
 #' Defaults to package data.
 #' @return The file path of the .png file.
@@ -23,97 +23,99 @@
 #'
 #' @import magick
 #' @import dplyr
+#'
 #' @export
 my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
                         saveto = getwd(), dataset = data.frame()) {
 
-  if (!is.character(time) || !is.character(vibe) || !is.character(category) ||
-      !is.character(name)) {
-    stop("name, time, vibe, and category must be character strings")
-  }
-
-  if (!(time %in% c("long", "medium", "short"))) {
-    stop("time must be one of 'long', 'medium', or 'short'")
-  }
-
-  if (!(category %in% c("artists", "songs"))) {
-    stop("category must be one of 'artists' or 'songs'")
-  }
-
-  if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
-    stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
-  }
-
-  if (name == "") {
-    warning("name cannot be an empty string, defaulted to 'Untitled'")
-  }
-
-
-  background_relative <- paste0(category, "_", time, "_", vibe, ".png")
-  background_path <- system.file("vibes", background_relative,
-                                 package = "spotifywRapped")
-
-  background <- magick::image_read(background_path)
-  if (length(dataset) == 0) {
-    if (category == "artists") {
-      if (time == "long") {
-        dataset <- spotifywRapped::top_artists_longterm
-      } else if (time == "medium") {
-        dataset <- spotifywRapped::top_artists_mediumterm
-      } else if (time == "short") {
-        dataset <- spotifywRapped::top_artists_shortterm
-      }
-      image_url <- dataset$images[1][[1]]$url[[1]]
-
-    } else {
-      if (time == "long") {
-        dataset <- spotifywRapped::top_tracks_longterm
-      } else if (time == "medium") {
-        dataset <- spotifywRapped::top_tracks_mediumterm
-      } else if (time == "short") {
-        dataset <- spotifywRapped::top_tracks_shortterm
-      }
-      image_url <- dataset$album.images[1][[1]]$url[[1]]
+    if (!is.character(time) || !is.character(vibe) || !is.character(category) ||
+        !is.character(name)) {
+      stop("name, time, vibe, and category must be character strings")
     }
-  }
 
-  mini_image <- magick::image_read(image_url)
-  mini_image <- magick::image_resize(mini_image, "530x530")
-
-  box_coordinates <- data.frame(
-    x = rep(400, times = 4) / 1080,
-    y = (1920 - c(1140, 1270, 1400, 1530) - 42) / 1920,
-    label = dataset$name[2:5]
-  )
-
-  file_name <- paste0(name, ".png")
-  postables_path <- file.path(saveto, file_name)
-
-  png(postables_path, width = 1080, height = 1920)
-
-  par(mar = c(0, 0, 0, 0))  # Set all margins to zero
-  plot(0, type = "n", xlim = c(0, 1), ylim = c(0, 1), xaxt = 'n', yaxt = 'n',
-       xlab = '', ylab = '', main = '', bty = 'n', ann = FALSE)
-
-  for (label in box_coordinates$label) {
-    if (nchar(label) > 30) {
-      new_label <- paste0(substr(label, 1, 30), "...")
-      box_coordinates$label[box_coordinates$label == label] <- new_label
+    if (!(time %in% c("long", "medium", "short"))) {
+      stop("time must be one of 'long', 'medium', or 'short'")
     }
-  }
 
-  # Overlay the raster image
-  graphics::rasterImage(background, 0, 0, 1, 1)
-  graphics::rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
-              (1920 - 500)/1920)
-  textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
-  text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
-       labels = dataset$name[1], col = textcolor, cex = 3, adj = 0.5)
-  text(x = box_coordinates$x, y = box_coordinates$y,
-       labels = box_coordinates$label, col = textcolor, cex = 3, adj = 0)
+    if (!(category %in% c("artists", "songs"))) {
+      stop("category must be one of 'artists' or 'songs'")
+    }
 
-  # Close the graphics device
-  dev.off()
+    if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
+      stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
+    }
 
-  return(postables_path)
+    if (name == "") {
+      warning("name cannot be an empty string, defaulted to 'Untitled'")
+    }
+
+
+    background_relative <- paste0(category, "_", time, "_", vibe, ".png")
+    background_path <- system.file("vibes", background_relative,
+                                   package = "spotifywRapped")
+
+    background <- magick::image_read(background_path)
+    if (length(dataset) == 0) {
+      if (category == "artists") {
+        if (time == "long") {
+          dataset <- spotifywRapped::top_artists_longterm
+        } else if (time == "medium") {
+          dataset <- spotifywRapped::top_artists_mediumterm
+        } else if (time == "short") {
+          dataset <- spotifywRapped::top_artists_shortterm
+        }
+        image_url <- dataset$images[1][[1]]$url[[1]]
+
+      } else {
+        if (time == "long") {
+          dataset <- spotifywRapped::top_tracks_longterm
+        } else if (time == "medium") {
+          dataset <- spotifywRapped::top_tracks_mediumterm
+        } else if (time == "short") {
+          dataset <- spotifywRapped::top_tracks_shortterm
+        }
+        image_url <- dataset$album.images[1][[1]]$url[[1]]
+      }
+    }
+
+    mini_image <- magick::image_read(image_url)
+    mini_image <- magick::image_resize(mini_image, "530x530")
+
+    box_coordinates <- data.frame(
+      x = rep(400, times = 4) / 1080,
+      y = (1920 - c(1140, 1270, 1400, 1530) - 42) / 1920,
+      label = dataset$name[2:5]
+    )
+
+    file_name <- paste0(name, ".png")
+    postables_path <- file.path(saveto, file_name)
+
+    png(postables_path, width = 1080, height = 1920)
+
+    par(mar = c(0, 0, 0, 0))  # Set all margins to zero
+    plot(0, type = "n", xlim = c(0, 1), ylim = c(0, 1), xaxt = "n", yaxt = "n",
+         xlab = "", ylab = "", main = "", bty = "n", ann = FALSE)
+
+    for (label in box_coordinates$label) {
+      if (nchar(label) > 30) {
+        new_label <- paste0(substr(label, 1, 30), "...")
+        box_coordinates$label[box_coordinates$label == label] <- new_label
+      }
+    }
+
+    # Overlay the raster image
+    graphics::rasterImage( background, 0, 0, 1, 1 )
+    graphics::rasterImage( mini_image, 275 / 1080, (1920 - 530 - 500) / 1920,
+                          (275 + 530) / 1080,
+                          (1920 - 500) / 1920)
+    textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
+    text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
+         labels = dataset$name[1], col = textcolor, cex = 3, adj = 0.5)
+    text(x = box_coordinates$x, y = box_coordinates$y,
+         labels = box_coordinates$label, col = textcolor, cex = 3, adj = 0)
+
+    # Close the graphics device
+    dev.off()
+
+    return(postables_path)
 }
