@@ -28,7 +28,8 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                vibe = "neon", name = "untitled",
                                saveto = getwd()) {
 
-  file_name <- paste0(saveto, "/", name, ".png")
+  file_name <- file.path(saveto, paste0(name, ".png"))
+  print(file_name)
 
   labels <- c("Sad Boy Hours", "Chilling", "Hype Mood", "Energetic Despair")
 
@@ -63,10 +64,11 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
     dot_color <- "#42a593"
     background_color <- "#1e1d1d"
     text_line_color <- "white"
-    background_image <- system.file("vibes", "enval_soft.png",
+    background_image <- system.file("vibes", "enval_bright.png",
                                     package = "spotifywRapped")
   }
 
+  print(background_image)
   enval_plot <- ggplot(data, aes(x = energy, y = valence)) +
     geom_point(size = 5, color = dot_color) +
     theme(plot.margin = margin(345, 84, 663, 84, "points"),
