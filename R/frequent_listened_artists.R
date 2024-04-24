@@ -1,5 +1,7 @@
 #' Generate a Frequent Listened Artists' Name plot based on Spotify data
 #'
+#' @param category Character string indicating the category for the data. Must
+#'  be one of "long" or "saved".
 #' @param data Character string indicating the type of Spotify data to use.
 #'  Can be "long" for long-term top tracks or "saved" for saved tracks.
 #' @param vibe Character string indicating the vibe of the word cloud.
@@ -16,17 +18,14 @@
 #' @importFrom cowplot ggdraw draw_image
 #'
 #' @export
-frequent_listened_artists <- function(data = spotifywRapped::saved_tracks, vibe = "neon",
+frequent_listened_artists <- function(category,
+                                      data = spotifywRapped::saved_tracks,
+                                      vibe = "neon",
                                       name = "untitled", saveto = getwd()) {
 
   # Check argument types
-  if (!is.character(vibe) || !is.character(name) || !is.character(data)) {
-    stop("name, data, and vibe must be character strings")
-  }
-
-  # Check if data argument is valid
-  if (!(data %in% c("long", "saved"))) {
-    stop("data must be one of 'long' or 'saved'")
+  if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
+    stop("name, category, and vibe must be character strings")
   }
 
   # Check if vibe argument is valid
@@ -34,13 +33,18 @@ frequent_listened_artists <- function(data = spotifywRapped::saved_tracks, vibe 
     stop("vibe must be one of 'bright', 'neutral', 'neon', or 'soft'")
   }
 
+  # Check if category argument is valid
+  if (!(category %in% c("long", "saved"))) {
+    stop("category must be one of 'long' or 'saved'")
+  }
+
   # Check if name is empty
   if (name == "") {
     warning("name cannot be an empty string, defaulted to 'untitled'")
   }
 
-  # Select data based on time
-  if (data == "long") {
+# Select data based on category
+if (category == "long") {
     data <- spotifywRapped::top_tracks_longterm
     artist_names <- vector("list", length = nrow(data))
     for (i in seq_len(nrow(data))) {
@@ -57,24 +61,24 @@ frequent_listened_artists <- function(data = spotifywRapped::saved_tracks, vibe 
       "bright" = system.file("vibes", "wordcloud_top_bright.png",
                              package = "spotifywRapped")
     )
-  } else {
-    data <- spotifywRapped::saved_tracks
-    artist_names <- vector("list", length = nrow(data))
-    for (i in seq_len(nrow(data))) {
-      artist_names[[i]] <- data$artist[i]
-    }
-    # Define background images
-    background_image <- list(
-      "soft" = system.file("vibes", "wordcloud_saved_soft.png",
-                           package = "spotifywRapped"),
-      "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
-                              package = "spotifywRapped"),
-      "neon" = system.file("vibes", "wordcloud_saved_neon.png",
-                           package = "spotifywRapped"),
-      "bright" = system.file("vibes", "wordcloud_saved_bright.png",
-                             package = "spotifywRapped")
-    )
+} else {
+  data <- spotifywRapped::saved_tracks
+  artist_names <- vector("list", length = nrow(data))
+  for (i in seq_len(nrow(data))) {
+    artist_names[[i]] <- data$artist[i]
   }
+  # Define background images
+  background_image <- list(
+    "soft" = system.file("vibes", "wordcloud_saved_soft.png",
+                         package = "spotifywRapped"),
+    "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
+                            package = "spotifywRapped"),
+    "neon" = system.file("vibes", "wordcloud_saved_neon.png",
+                         package = "spotifywRapped"),
+    "bright" = system.file("vibes", "wordcloud_saved_bright.png",
+                           package = "spotifywRapped")
+  )
+}
 
   # Define file path for the output image
   file_name <- file.path(saveto, paste0(name, ".png"))

@@ -5,6 +5,7 @@
 \title{Generate a Frequent Listened Artists' Name plot based on Spotify data}
 \usage{
 frequent_listened_artists(
+  category,
   data = spotifywRapped::saved_tracks,
   vibe = "neon",
   name = "untitled",
@@ -12,6 +13,9 @@ frequent_listened_artists(
 )
 }
 \arguments{
+\item{category}{Character string indicating the category for the data. Must
+be one of "long" or "saved".}
+
 \item{data}{Character string indicating the type of Spotify data to use.
 Can be "long" for long-term top tracks or "saved" for saved tracks.}
 
