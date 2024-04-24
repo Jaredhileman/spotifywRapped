@@ -1,3 +1,25 @@
+#' Artist Frequency Bar Graph
+#'
+#' Create a bar graph demonstrating the top 10 artists, and how many songs of
+#'   each artist.
+#'
+#' @param dataset A data frame containing the user's saved or top tracks.
+#'   Defaults to package data.
+#' @param category A character string specifying whether the tracks come from
+#'   the saved or top tracks.
+#' @param vibe A character string specifying the vibe of the graphic. Must be
+#'   one of "bright", "dark", "neon", or "soft".
+#' @param name A character string specifying the name of the graphic.
+#' @param saveto A character string specifying the directory where the graphic
+#'   should be saved. Defaults to the current working directory.
+#'
+#' @import ggplot2
+#' @importFrom cowplot ggdraw draw_image draw_plot
+#' @importFrom grid textGrob gpar
+#' @importFrom grDevices png dev.off
+#'
+#' @return The file path of the .png file.
+#' @export
 artist_frequency <- function(dataset = data.frame(),
                              category = "saved",
                              vibe = "neon",
@@ -93,9 +115,11 @@ artist_frequency <- function(dataset = data.frame(),
 
   #plot
   artist_frequency_plot <- ggplot2::ggplot(data = new_df,
-                                           ggplot2::aes(x = reorder(Var1, -new_df$Freq), y = new_df$Freq)) +
+                                           ggplot2::aes(x = reorder(new_df$Var1,
+                                                                    -new_df$Freq),
+                                                        y = new_df$Freq)) +
     ggplot2::geom_bar(stat = "identity", fill = bar_color) +
-    ggplot2::geom_text(aes(label = Var1),
+    ggplot2::geom_text(aes(label = new_df$Var1),
                        vjust = -1,
                        hjust = 0,
                        color = text_line_color,
@@ -111,26 +135,24 @@ artist_frequency <- function(dataset = data.frame(),
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme_minimal() +
     ggplot2::theme(plot.margin = ggplot2::margin(388, 128, 705, 125, "points"),
-                   plot.background = ggplot2::element_rect(fill = fill = background_color,
-                     color = NA)) +
+                   plot.background = ggplot2::element_rect(fill = background_color,
+                                                           color = NA)) +
     ggplot2::theme(axis.line = element_line(color = bar_color),
-          axis.line.x = element_blank(),
-          axis.text = element_text(color = bar_color),
-          panel.grid.major = element_line(color = bar_color,
-                                          linetype = "dotted"),
-          panel.grid.minor = element_line(color = bar_color,
-                                          linetype = "dotted")) +
+                   axis.line.x = element_blank(),
+                   axis.text = element_text(color = bar_color),
+                   panel.grid.major = element_line(color = bar_color,
+                                                   linetype = "dotted"),
+                   panel.grid.minor = element_line(color = bar_color,
+                                                   linetype = "dotted")) +
     ggplot2::coord_cartesian(ylim = c(0, y_max), xlim = c(1, 11)) +
     ggplot2::coord_cartesian(clip = "off") +
     ggplot2::annotation_custom(grid::textGrob(top_artist,
-                                              gp = grid::gpar(
-                                                fontsize = 60,
-                                                col = text_line_color)),
+                                              gp = grid::gpar(fontsize = 60,
+                                                              col = text_line_color)),
                                xmin = 6.5, xmax = 6.5, ymax = -27.5) +
     ggplot2::annotation_custom(grid::textGrob(number_song,
-                                              gp = grid::gpar(
-                                                fontsize = 60,
-                                                col = text_line_color)),
+                                              gp = grid::gpar(fontsize = 60,
+                                                              col = text_line_color)),
                                xmin = 6.5, xmax = 6.5, ymax = -48)
 
   # arrange file
