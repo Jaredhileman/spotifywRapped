@@ -14,8 +14,8 @@
 #' be one of "long", "medium", or "short".
 #' @param vibe A character string specifying the vibe of the graphic. Must be
 #' one of "bright", "dark", "neon", or "soft".
-#' @param category A character string specifying whether the data is for artists or
-#' tracks. Must be one of "artists" or "songs".
+#' @param category A character string specifying whether the data is for
+#'   artists or tracks. Must be one of "artists" or "songs".
 #' @param dataset A data frame containing the user's top artists or tracks.
 #' Defaults to package data.
 #' @return The file path of the .png file.
@@ -28,7 +28,7 @@ my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
                         saveto = getwd(), dataset = data.frame()) {
 
   if (!is.character(time) || !is.character(vibe) || !is.character(category) ||
-      !is.character(name)) {
+        !is.character(name)) {
     stop("name, time, vibe, and category must be character strings")
   }
 
@@ -104,10 +104,10 @@ my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
 
   # Overlay the raster image
   graphics::rasterImage(background, 0, 0, 1, 1)
-  graphics::rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500)/1920, (275 + 530)/1080,
-              (1920 - 500)/1920)
+  graphics::rasterImage(mini_image, 275 / 1080, (1920 - 530 - 500) / 1920, (275 + 530) / 1080,
+                        (1920 - 500) / 1920)
   textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
-  text(x = (190 + 350)/1080, y = (1920 - 350)/1920,
+  text(x = (190 + 350) / 1080, y = (1920 - 350) / 1920,
        labels = dataset$name[1], col = textcolor, cex = 3, adj = 0.5)
   text(x = box_coordinates$x, y = box_coordinates$y,
        labels = box_coordinates$label, col = textcolor, cex = 3, adj = 0)
