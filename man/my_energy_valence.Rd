@@ -7,7 +7,7 @@
 my_energy_valence(
   data = spotifywRapped::saved_tracks,
   vibe = "neon",
-  name = "untitled.png",
+  name = "untitled",
   saveto = getwd()
 )
 }

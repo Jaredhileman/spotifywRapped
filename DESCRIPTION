@@ -26,9 +26,9 @@ VignetteBuilder: knitr
 Imports: 
     cowplot,
     dplyr,
+    forcats,
     ggplot2,
     grid,
     magick,
     spotifyr,
     wordcloud2
-

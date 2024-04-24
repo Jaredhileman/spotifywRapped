@@ -1,8 +1,8 @@
 ---
-title: "SpotifywRapped: Unwrapped!"
+title: "spotifywRapped: Unwrapped!"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SpotifywRapped: Unwrapped!}
+  %\VignetteIndexEntry{spotifywRapped: Unwrapped!}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,4 +16,5 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(spotifywRapped)
+
 ```

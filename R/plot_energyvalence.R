@@ -19,6 +19,7 @@
 #' @import ggplot2
 #' @importFrom cowplot ggdraw draw_image draw_plot
 #' @importFrom grid textGrob gpar
+#' @import gridExtra
 #' @importFrom grDevices png dev.off
 #'
 #'
@@ -53,7 +54,7 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
     background_image <- system.file("vibes", "enval_neutral.png",
                                     package = "spotifywRapped")
   } else if (vibe == "neon") {
-    dot_color <- "#00fb35"
+    dot_color <- "#e5ff04"
     background_color <- "black"
     text_line_color <- "white"
     background_image <- system.file("vibes", "enval_neon.png",
@@ -66,40 +67,40 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                     package = "spotifywRapped")
   }
 
-  enval_plot <- ggplot2::ggplot(data, ggplot2::aes(x = energy, y = valence)) +
-    ggplot2::geom_point(size = 5, color = dot_color) +
-    ggplot2::theme(plot.margin = ggplot2::margin(345, 84, 663, 84, "points"),
-          plot.background = ggplot2::element_rect(fill = "transparent"),
-          panel.background = ggplot2::element_rect(fill = background_color),
-          panel.grid.major = ggplot2::element_line(color = text_line_color, linewidth = 1),
-          axis.text = ggplot2::element_blank(),
-          axis.title = ggplot2::element_blank()) +
-    ggplot2::scale_x_continuous(breaks = 0.5) +
-    ggplot2::scale_y_continuous(breaks = 0.5) +
-    ggplot2::annotate('text', x = .15, y = 1,label="Energetic Despair", size = 12,
+  enval_plot <- ggplot(data, aes(x = energy, y = valence)) +
+    geom_point(size = 5, color = dot_color) +
+    theme(plot.margin = margin(345, 84, 663, 84, "points"),
+          plot.background = element_rect(fill = "transparent"),
+          panel.background = element_rect(fill = background_color),
+          panel.grid.major = element_line(color = text_line_color, linewidth = 1),
+          axis.text = element_blank(),
+          axis.title = element_blank()) +
+    scale_x_continuous(breaks = 0.5) +
+    scale_y_continuous(breaks = 0.5) +
+    annotate('text', x = .19, y = .95,label="Energetic Despair", size = 12,
              col = text_line_color) +
-    ggplot2::annotate('text', x = .9, y = 1, label = "Hype Mood", size = 12,
+    annotate('text', x = .87, y = .95, label = "Hype Mood", size = 12,
              col = text_line_color) +
-    ggplot2::annotate('text', x = .95, y = 0, label = "Chilling", size = 12,
+    annotate('text', x = .91, y = .05, label = "Chilling", size = 12,
              col = text_line_color) +
-    ggplot2::annotate('text', x = .1, y = 0, label = "Sad Boy Hours", size = 12,
+    annotate('text', x = .18, y = .05, label = "Sad Boy Hours", size = 12,
              col = text_line_color) +
-    ggplot2::annotate('text', x = 0.99, y = .55, label = "Energy", size = 9,
+    annotate('text', x = 0.99, y = .55, label = "Energy", size = 9,
              col = text_line_color, angle = 90) +
-    ggplot2::annotate('text', x = 0.95, y = .48, label = "Valence", size = 9,
+    annotate('text', x = 0.95, y = .48, label = "Valence", size = 9,
              col = text_line_color) +
-    ggplot2::coord_cartesian(clip = "off") +
-    ggplot2::annotation_custom(grid::textGrob(vibe_label,
+    coord_cartesian(clip = "off") +
+    annotation_custom(grid::textGrob(vibe_label,
                                      gp = grid::gpar(fontsize = 100,
                                                      col = text_line_color)),
-                      xmin = 0.5, xmax = 0.5, ymax = -0.7)
+                      xmin = 0.5, xmax = 0.5, ymax = -0.6)
 
-  grDevices::png(filename = file_name,
+  png(filename = file_name,
       width = 1080, height = 1920, units = "px")
 
-  cowplot::ggdraw() +
-    cowplot::draw_image(background_image) +
-    cowplot::draw_plot(enval_plot)
+  ggdraw() +
+    draw_image(background_image) +
+    draw_plot(enval_plot)
 
-  grDevices::dev.off()
+  dev.off()
 }
