@@ -15,14 +15,28 @@ knitr::opts_chunk$set(
 ```
 
 ## Overview
-The spotifywRapped package is a great tool for visualizing a user's Spotify listening history.
 
+The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history. There are several kinds of built-in visualization options a user has at their disposal--let's give them a look!
 
+## Energy & Valence Plots
 
-```{r setup}
+The energy vs valence plot gives a visual summary of the general "vibe" a user tends towards in their favorite music. Using the user's saved tracks, the plot shows the distribution of songs across four quadrants, each representing a different mood.
+
+The function takes the user's listening data, vibe choice, filename, and save location as arguments. It outputs a .png file to the save location of the user's choice and returns the image's file path.
+
+```{r enval}
 library(spotifywRapped)
 
-my_energy_valence()
+temp_save <- tempdir()
+energy_valence_demo <- my_energy_valence(saveto = temp_save, vibe = "neon", name = "enval_neon")
+
+```
+
+Here is an example of the energy vs valence plot:
+
+![](`r energy_valence_demo`)
+
+```{r, echo = FALSE}
 ```
 
 ```{r, echo = FALSE}
