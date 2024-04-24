@@ -96,14 +96,12 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
                                                               col = text_line_color)),
                                xmin = 0.5, xmax = 0.5, ymax = -0.7)
 
-  enval_plot
 
-  png(filename = file_name,
-                 width = 1080, height = 1920, units = "px")
-
-  cowplot::ggdraw() +
-    cowplot::draw_image(background_image) +
-    cowplot::draw_plot(enval_plot)
-
+  png(filename = file_name, width = 1080, height = 1920, units = "px")
+  print(
+    cowplot::ggdraw() +
+      cowplot::draw_image(background_image) +
+      cowplot::draw_plot(enval_plot)
+  )
   dev.off()
 }
