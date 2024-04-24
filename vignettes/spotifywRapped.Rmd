@@ -14,7 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+Let's try this!
 ```{r setup}
 library(spotifywRapped)
+
+my_energy_valence()
+```
+
+```{r, echo = FALSE}
 
 ```

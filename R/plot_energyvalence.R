@@ -14,7 +14,7 @@
 #' @param saveto string to be used as the directory for the output file.
 #' Defaults to working directory.
 #'
-#' @return a PNG file correctly sized for posting as an Instagram Story.
+#' @return the file path to the generated .png file
 #'
 #' @import ggplot2
 #' @importFrom cowplot ggdraw draw_image draw_plot
@@ -104,4 +104,6 @@ my_energy_valence <- function (data = spotifywRapped::saved_tracks,
       cowplot::draw_plot(enval_plot)
   )
   dev.off()
+
+  return(file_name)
 }
