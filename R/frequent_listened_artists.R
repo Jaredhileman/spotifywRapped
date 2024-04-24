@@ -43,13 +43,14 @@ frequent_listened_artists <- function(category,
     warning("name cannot be an empty string, defaulted to 'untitled'")
   }
 
-# Select data based on category
-if (category == "long") {
+  # Select data based on category
+  if (category == "long") {
     data <- spotifywRapped::top_tracks_longterm
     artist_names <- vector("list", length = nrow(data))
     for (i in seq_len(nrow(data))) {
       artist_names[[i]] <- data$artists[[i]]$name
     }
+
     # Define background images
     background_image <- list(
       "soft" = system.file("vibes", "wordcloud_top_soft.png",
@@ -61,24 +62,24 @@ if (category == "long") {
       "bright" = system.file("vibes", "wordcloud_top_bright.png",
                              package = "spotifywRapped")
     )
-} else {
-  data <- spotifywRapped::saved_tracks
-  artist_names <- vector("list", length = nrow(data))
-  for (i in seq_len(nrow(data))) {
-    artist_names[[i]] <- data$artist[i]
+  } else {
+    data <- spotifywRapped::saved_tracks
+    artist_names <- vector("list", length = nrow(data))
+    for (i in seq_len(nrow(data))) {
+      artist_names[[i]] <- data$artist[i]
+    }
+    # Define background images
+    background_image <- list(
+      "soft" = system.file("vibes", "wordcloud_saved_soft.png",
+                           package = "spotifywRapped"),
+      "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
+                              package = "spotifywRapped"),
+      "neon" = system.file("vibes", "wordcloud_saved_neon.png",
+                           package = "spotifywRapped"),
+      "bright" = system.file("vibes", "wordcloud_saved_bright.png",
+                             package = "spotifywRapped")
+    )
   }
-  # Define background images
-  background_image <- list(
-    "soft" = system.file("vibes", "wordcloud_saved_soft.png",
-                         package = "spotifywRapped"),
-    "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
-                            package = "spotifywRapped"),
-    "neon" = system.file("vibes", "wordcloud_saved_neon.png",
-                         package = "spotifywRapped"),
-    "bright" = system.file("vibes", "wordcloud_saved_bright.png",
-                           package = "spotifywRapped")
-  )
-}
 
   # Define file path for the output image
   file_name <- file.path(saveto, paste0(name, ".png"))
@@ -98,9 +99,10 @@ if (category == "long") {
   )
 
   # Define background colors
-  background <- list(
-    "soft" = "white", "neon" = "black", "neutral" = "white", "bright" = "#1e1d1d"
-  )
+  background <- list("soft" = "white",
+                     "neon" = "black",
+                     "neutral" = "white",
+                     "bright" = "#1e1d1d")
 
   # Select colors and background based on vibe
   colors <-  vibe_colors[[vibe]]
@@ -120,8 +122,11 @@ if (category == "long") {
   # Capture word cloud as PNG
   wordcloud_png_file <- tempfile(pattern = "file", tmpdir = tempdir(),
                                  fileext = ".png")
-  webshot(wordcloud_html_file, wordcloud_png_file,
-          vwidth = 1080, vheight = 1920, delay = 1)
+  webshot::webshot(wordcloud_html_file,
+                   wordcloud_png_file,
+                   vwidth = 1080,
+                   vheight = 1920,
+                   delay = 1)
 
   # Read the captured PNG image
   image <- magick::image_read(wordcloud_png_file)
