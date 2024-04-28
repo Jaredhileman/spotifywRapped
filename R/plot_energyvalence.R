@@ -38,14 +38,15 @@ my_energy_valence <- function(data = spotifywRapped::saved_tracks,
 
   valid_vibes <- c("soft", "neutral", "neon", "bright")
   if (!(vibe %in% valid_vibes)) {
-    stop("The vibe argument must be one of: 'soft', 'neutral', 'neon', 'bright'")
+    stop("The vibe argument must be one of: 'soft', 'neutral', 'neon',
+         'bright'")
   }
 
   file_name <- file.path(saveto, paste0(name, ".png"))
 
   labels <- c("Sad Boy Hours", "Chilling", "Hype Mood", "Energetic Despair")
 
-name <- 9
+  name <- 9
 
   sad_count <- sum(data$energy <= 0.5 & data$valence <= 0.5)
   chill_count <- sum(data$energy <= 0.5 & data$valence > 0.5)
