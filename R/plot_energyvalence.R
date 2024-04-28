@@ -68,7 +68,7 @@ my_energy_valence <- function(data = spotifywRapped::saved_tracks,
                                     package = "spotifywRapped")
   }
 
-  enval_plot <- ggplot2::ggplot(data, ggplot2::aes(x = data$energy, y = data$valence)) +
+  enval_plot <- ggplot2::ggplot(data, ggplot2::aes(x = energy, y = valence)) +
     ggplot2::geom_point(size = 5, color = dot_color) +
     ggplot2::theme(plot.margin = ggplot2::margin(345, 84, 663, 84, "points"),
                    plot.background = ggplot2::element_rect(fill = "transparent"),
