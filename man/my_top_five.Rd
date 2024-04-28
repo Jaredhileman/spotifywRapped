@@ -21,7 +21,8 @@ be one of "long", "medium", or "short".}
 one of "bright", "dark", "neon", or "soft".}
 
 \item{category}{A character string specifying whether the data is for artists
-or tracks. Must be one of "artists" or "songs".}
+or
+tracks. Must be one of "artists" or "songs".}
 
 \item{name}{A character string specifying the name of the graphic.}
 
