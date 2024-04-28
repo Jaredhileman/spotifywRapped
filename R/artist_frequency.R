@@ -125,25 +125,25 @@ artist_frequency <- function(dataset = data.frame(),
                        color = text_line_color,
                        size = 8,
                        angle = 30,
-                       position = ggplot2::position_nudge(x = -0.25)) +
+                       position = position_nudge(x = -0.25)) +
     ggplot2::scale_x_discrete(labels = NULL,
                               breaks = NULL,
-                              expand = ggplot2::expansion(add = c(0.75, 3))) +
+                              expand = expansion(add = c(0.75, 3))) +
     ggplot2::scale_y_continuous(breaks = seq(0, y_max, 5),
                                 limits = c(0, y_max),
-                                expand = ggplot2::expansion(add = c(0, 7))) +
+                                expand = expansion(add = c(0, 7))) +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme_minimal() +
     ggplot2::theme(plot.margin = ggplot2::margin(388, 128, 705, 125, "points"),
                    plot.background = ggplot2::element_rect(fill = background_color,
                                                            color = NA)) +
-    ggplot2::theme(axis.line = ggplot2::element_line(color = bar_color),
-                   axis.line.x = ggplot2::element_blank(),
-                   axis.text = ggplot2::element_text(color = bar_color),
-                   panel.grid.major = ggplot2::element_line(color = bar_color,
-                                                            linetype = "dotted"),
-                   panel.grid.minor = ggplot2::element_line(color = bar_color,
-                                                            linetype = "dotted")) +
+    ggplot2::theme(axis.line = element_line(color = bar_color),
+                   axis.line.x = element_blank(),
+                   axis.text = element_text(color = bar_color),
+                   panel.grid.major = element_line(color = bar_color,
+                                                   linetype = "dotted"),
+                   panel.grid.minor = element_line(color = bar_color,
+                                                   linetype = "dotted")) +
     ggplot2::coord_cartesian(ylim = c(0, y_max), xlim = c(1, 11)) +
     ggplot2::coord_cartesian(clip = "off") +
     ggplot2::annotation_custom(grid::textGrob(top_artist,

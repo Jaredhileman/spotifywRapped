@@ -24,7 +24,7 @@
 #' @import magick
 #' @import dplyr
 #' @export
-my_top_five <- function(time, vibe, category = "artists", name = "Untitled",
+my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
                         saveto = getwd(), dataset = data.frame()) {
 
   my_top_five_validation(time, vibe, category, name, saveto, dataset)

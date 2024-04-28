@@ -8,7 +8,7 @@ my_top_five(
   time,
   vibe,
   category = "artists",
-  name = "Untitled",
+  name = "my_top_five",
   saveto = getwd(),
   dataset = data.frame()
 )
