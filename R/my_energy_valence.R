@@ -27,25 +27,11 @@ my_energy_valence <- function(data = spotifywRapped::saved_tracks,
                               vibe = "neon", name = "untitled",
                               saveto = getwd()) {
 
-  required_columns <- c("energy", "valence")
-  if (!all(required_columns %in% names(data))) {
-    stop("The dataset must contain columns called 'energy' and 'valence'.")
-  }
-
-  if (!dir.exists(saveto)) {
-    stop("The specified directory does not exist.")
-  }
-
-  valid_vibes <- c("soft", "neutral", "neon", "bright")
-  if (!(vibe %in% valid_vibes)) {
-    stop("The vibe argument must be one of: 'soft', 'neutral', 'neon', 'bright'")
-  }
-
   file_name <- file.path(saveto, paste0(name, ".png"))
 
   labels <- c("Sad Boy Hours", "Chilling", "Hype Mood", "Energetic Despair")
 
-name <- 9
+
 
   sad_count <- sum(data$energy <= 0.5 & data$valence <= 0.5)
   chill_count <- sum(data$energy <= 0.5 & data$valence > 0.5)
