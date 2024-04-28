@@ -1,3 +1,7 @@
+
+#' @import spotifyr
+#' @import dplyr
+#' @import usethis
 id <- "b6bed725df9a4966a23b8984a2d40457"
 secret <- "5609c10a964b4f2082f47842a5d2fc50"
 

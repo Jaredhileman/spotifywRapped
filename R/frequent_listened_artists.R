@@ -16,6 +16,7 @@
 #' @importFrom webshot webshot
 #' @importFrom magick image_read image_crop
 #' @importFrom cowplot ggdraw draw_image
+#' @importFrom utils head
 #'
 #' @export
 frequent_listened_artists <- function(category,
