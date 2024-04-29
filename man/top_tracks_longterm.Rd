@@ -12,7 +12,7 @@ A data frame with 1000 rows and 29 columns:
 \item{artists}{Dataframe containing artist(s) name, ID, and photo URLs}
 \item{available_markets}{Countries in which song is availabe}
 \item{id}{Track's unique Spotify ID. Can be used to access track audio
-features}
+features. Character}
 \item{name}{Track title}
 \item{album.images}{Album cover image URL(s) to which the track belongs}
 ...
@@ -27,7 +27,7 @@ top_tracks_longterm
 }
 \description{
 Top / most-played of Jared Hileman's Spotify tracks pulled from approximately
-April 23rd, 2022 - April 23th, 2024 (around 1 year -- limit: 1000
+April 23rd, 2023 - April 23th, 2024 (around 1 year -- limit: 1000
 observations).
 }
 \keyword{datasets}

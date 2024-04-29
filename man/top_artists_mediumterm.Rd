@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{top_artists_mediumterm}}{
 
-A data frame with 69 rows and 29 columns:
+A data frame with 56 rows and 11 columns:
 \describe{
 \item{name}{Artist's name, character}
 \item{id}{Artist's unique Spotify ID, character}

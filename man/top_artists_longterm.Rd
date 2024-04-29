@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{top_artists_longterm}}{
 
-A data frame with 1000 rows and 29 columns:
+A data frame with 133 rows and 11 columns:
 \describe{
 \item{name}{Artist's name, character}
 \item{id}{Artist's unique Spotify ID, character}
@@ -26,7 +26,7 @@ top_artists_longterm
 }
 \description{
 Top / most-played of Jared Hileman's Spotify artists pulled from
-approximately April 23rd, 2022 - April 23th, 2024
+approximately April 23rd, 2023 - April 23th, 2024
 (around 1 year -- limit: 1000 observations).
 }
 \keyword{datasets}
