@@ -24,12 +24,11 @@
 #'
 #' @return The file path of the .png file.
 #' @export
-
 my_artist_frequency <- function(dataset = data.frame(),
-                             category = "saved",
-                             vibe = "neon",
-                             name = "artist_frequency",
-                             saveto = getwd()) {
+                                category = "saved",
+                                vibe = "neon",
+                                name = "artist_frequency",
+                                saveto = getwd()) {
   # file set-up
   file_name <- file.path(saveto, paste0(name, ".png"))
 
@@ -50,6 +49,10 @@ my_artist_frequency <- function(dataset = data.frame(),
   data_sorted <- df[order(df$Freq, decreasing = TRUE), ]
 
   new_df <- head(data_sorted, 10)
+  new_df$Var1 <- factor(new_df$Var1, levels =
+                          new_df$Var1[order(new_df$Freq, decreasing = TRUE)],
+                        ordered = TRUE)
+
 
   top_artist <- new_df$Var1[new_df$Freq == max(new_df$Freq)]
   number_song <- new_df$Freq[new_df$Var1 == top_artist]
@@ -122,7 +125,7 @@ my_artist_frequency <- function(dataset = data.frame(),
     ggplot2::theme(
       axis.line = element_line(color = bar_color),
       axis.line.x = element_blank(),
-      axis.text = element_text(color = bar_color),
+      axis.text = element_text(color = bar_color, size = 25),
       panel.grid.major = element_line(
         color = bar_color,
         linetype = "dotted"
