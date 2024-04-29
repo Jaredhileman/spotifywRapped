@@ -72,9 +72,11 @@ The function will return the file path to the generated .png file.
 
 
 ```{r top_artists}
-my_top_artists <- my_top_five(time = "long", vibe = "neutral", category = "artists",
-                              name = "My_Top_Artists_longterm", 
-                              saveto = temp_save)
+my_top_artists <- my_top_five(
+  time = "long", vibe = "neutral", category = "artists",
+  name = "My_Top_Artists_longterm",
+  saveto = temp_save
+)
 ```
 Here is an example of the top artist graphic from long-term listening history:
 ![](`r my_top_artists`){width=450px height=800px}
@@ -108,10 +110,11 @@ Parameter options:
 
 ```{r artist_frequency_top}
 
-artist_frequency_top_demo <- artist_frequency(category = "top", vibe = "soft", 
-                                         name = "Top Tracks Artist Frequency", 
-                                         saveto = temp_save)
-
+artist_frequency_top_demo <- artist_frequency(
+  category = "top", vibe = "soft",
+  name = "Top Tracks Artist Frequency",
+  saveto = temp_save
+)
 
 ```
 
@@ -121,10 +124,11 @@ Here is an example of the artist frequency graphic generated for the user's top 
 ![](`r artist_frequency_top_demo`){width=450px height=800px}
 
 ```{r artist_frequency_saved}
-
-artist_frequency_saved_demo <- artist_frequency(category = "saved", vibe = "neon", 
-                                         name = "Saved Tracks Artist Frequency", 
-                                         saveto = temp_save)
+artist_frequency_saved_demo <- artist_frequency(
+  category = "saved", vibe = "neon",
+  name = "Saved Tracks Artist Frequency",
+  saveto = temp_save
+)
 ```
 
 ...and again for the user's saved tracks:

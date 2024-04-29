@@ -14,6 +14,7 @@
 #'   should be saved. Defaults to the current working directory.
 #'
 #' @import ggplot2
+#' @import forcats
 #' @importFrom cowplot ggdraw draw_image draw_plot
 #' @importFrom grid textGrob gpar
 #' @importFrom grDevices png dev.off

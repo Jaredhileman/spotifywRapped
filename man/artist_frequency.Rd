@@ -8,7 +8,7 @@ artist_frequency(
   dataset = data.frame(),
   category = "saved",
   vibe = "neon",
-  name = "untitled",
+  name = "artist_frequency",
   saveto = getwd()
 )
 }
