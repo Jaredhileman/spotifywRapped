@@ -1,8 +1,8 @@
 ---
-title: "spotifywRapped: Unwrapped!"
+title: "spotifywRapped: Unwrapped"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{spotifywRapped: Unwrapped!}
+  %\VignetteIndexEntry{spotifywRapped: Unwrapped}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,11 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history. There are several kinds of built-in visualization options a user has at their disposal--let's give them a look!
+The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as png's in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
+
+## Obtaining the Data
+
+In order to use spotifywRapped, the user must get their Spotify data using an API. To do this, the user must have Spotify Premium. Then, they can go to the "Spotify Developer Dashboard" and select "Create an app" in the dashboard. The user can fill in the rest of the information however they would like, but "Redirect URIs" needs to be filled in with "http://localhost:1410/." One the API is created, the user only needs to use the "client ID" and "client secret" to save their data into an rda rile. Simply replace these codes in the "DATASET.R" file and run it, and the data is ready to go.
 
 ## Energy & Valence Plots
 
@@ -135,8 +139,6 @@ artist_frequency_saved_demo <- artist_frequency(
 
 ![](`r artist_frequency_saved_demo`){width=450px height=800px}
 
-These graphics still need maintenance and will be released with full templates in the next release!
-
 ## Wordcloud - Frequented Artists
 
 Finally, we have the `wordcloud` function, which generates a word cloud of the top 20 of the user's most frequently listened to artists from the user's saved tracks. The function takes the user's saved tracks, vibe, file name, and save location as arguments. The function will return the file path to the generated .png file.
@@ -151,7 +153,7 @@ Parameter options:
 
 - `saveto`: the directory to save the output file
 
-The wordcloud option is still under development. Please check back on future updates for this feature!
+The wordcloud option is still under development. Please check back on future updates for this feature.
 
 ## Datasets
 
@@ -177,3 +179,7 @@ The spotifywRapped package comes equipped with several example datasets that use
 - If users wish to use the `spotifywRapped` package for their own data, they must have a Spotify account and a Spotify Developer account. The package requires the user to have a Spotify API key to access their listening data. The package also requires the user to have preprocessed their data in the same way as done in the `DATASET.R` file.
 
 - Only 1000 observations were obtained for long-term top tracks and artists. Limits might be extended for medium and short term listening histories as well.
+
+## Summary 
+
+The spotifywRapped package provides a way for the user to visualize their listening history and patterns at any time (not just in December). Not only that, but the package uses numerical data to back up this information. With energy vs. valence plots, top artist and track breakdowns, artist frequency plots, and frequented artist wordclouds, the possibilities are endless. With spotifywRapped, Spotify Wrapped Day can be every day.

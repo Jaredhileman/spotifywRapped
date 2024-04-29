@@ -108,15 +108,18 @@ artist_frequency <- function(dataset = data.frame(),
     ggplot2::scale_y_continuous(
       breaks = seq(0, y_max, 5),
       limits = c(0, y_max),
-      expand = expansion(add = c(0, 7))
+      expand = expansion(add = c(0, 10))
     ) +
     ggplot2::labs(x = "", y = "") +
     ggplot2::theme_minimal() +
     ggplot2::theme(
       plot.margin = ggplot2::margin(388, 128, 705, 125, "points"),
       plot.background = ggplot2::element_rect(
-        fill = background_color,
+        fill = "transparent",
         color = NA
+      ),
+      panel.background = ggplot2::element_rect(
+        fill = background_color
       )
     ) +
     ggplot2::theme(
@@ -132,33 +135,22 @@ artist_frequency <- function(dataset = data.frame(),
         linetype = "dotted"
       )
     ) +
-    ggplot2::coord_cartesian(ylim = c(0, y_max), xlim = c(1, 11)) +
-    ggplot2::coord_cartesian(clip = "off") +
-    ggplot2::annotation_custom(
-      grid::textGrob(top_artist,
-        gp = grid::gpar(
-          fontsize = 60,
-          col = text_line_color
-        )
-      ),
-      xmin = 6.5, xmax = 6.5, ymax = -27.5
-    ) +
-    ggplot2::annotation_custom(
-      grid::textGrob(number_song,
-        gp = grid::gpar(
-          fontsize = 60,
-          col = text_line_color
-        )
-      ),
-      xmin = 6.5, xmax = 6.5, ymax = -48
-    )
+    ggplot2::coord_cartesian(ylim = c(0, y_max), xlim = c(1, 11))
 
   # arrange file
   png(filename = file_name, width = 1080, height = 1920, units = "px")
   print(
     cowplot::ggdraw() +
       cowplot::draw_image(background_image) +
-      cowplot::draw_plot(artist_frequency_plot)
+      cowplot::draw_plot(artist_frequency_plot) +
+      cowplot::draw_text(top_artist,
+                         y = 0.225,
+                         color = text_line_color,
+                         size = 60) +
+      cowplot::draw_text(number_song,
+                         y = 0.125,
+                         color = text_line_color,
+                         size = 60)
   )
   dev.off()
   return(file_name)
