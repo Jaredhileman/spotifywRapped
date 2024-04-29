@@ -85,15 +85,12 @@ artist_frequency <- function(dataset = data.frame(),
   artist_frequency_plot <- ggplot2::ggplot(
     data = new_df,
     ggplot2::aes(
-      x = reorder(
-        new_df$Var1,
-        -new_df$Freq
-      ),
-      y = new_df$Freq
+      x = .data$Var1,
+      y = .data$Freq
     )
   ) +
     ggplot2::geom_bar(stat = "identity", fill = bar_color) +
-    ggplot2::geom_text(aes(label = new_df$Var1),
+    ggplot2::geom_text(aes(label = .data$Var1),
       vjust = -1, hjust = 0,
       color = text_line_color,
       size = 8,
