@@ -25,7 +25,7 @@
 #' @return The file path of the .png file.
 #' @export
 
-artist_frequency <- function(dataset = data.frame(),
+my_artist_frequency <- function(dataset = data.frame(),
                              category = "saved",
                              vibe = "neon",
                              name = "artist_frequency",
