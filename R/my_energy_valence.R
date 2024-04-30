@@ -24,7 +24,7 @@
 #'
 #' @export
 my_energy_valence <- function(data = spotifywRapped::saved_tracks,
-                              vibe = "neon", name = "untitled",
+                              vibe = "neon", name = "energy_valence",
                               saveto = getwd()) {
 
   file_name <- file.path(saveto, paste0(name, ".png"))

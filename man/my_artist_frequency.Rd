@@ -5,7 +5,7 @@
 \title{Artist Frequency Bar Graph}
 \usage{
 my_artist_frequency(
-  dataset = data.frame(),
+  data = data.frame(),
   category = "saved",
   vibe = "neon",
   name = "artist_frequency",
@@ -13,7 +13,7 @@ my_artist_frequency(
 )
 }
 \arguments{
-\item{dataset}{A data frame containing the user's saved or top tracks.
+\item{data}{A data frame containing the user's saved or top tracks.
 Defaults to package data.}
 
 \item{category}{A character string specifying whether the tracks come from

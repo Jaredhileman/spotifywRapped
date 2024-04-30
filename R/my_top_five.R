@@ -6,28 +6,29 @@
 #' The user specifies both the name and storage location of the graphic, which
 #' is saved as a .png file.
 #'
-#' @param name A character string specifying the name of the graphic.
-#' @param saveto A character string specifying the directory where the graphic
-#' should be saved. Defaults to the current working directory.
+#'
+#' @param data A data frame containing the user's top artists or tracks.
+#' Defaults to package data.
+#' @param category A character string specifying whether the data is for artists
+#'  or tracks. Must be one of "artists" or "songs".
 #' @param time A character string specifying the time frame for the data. Must
 #' be one of "long", "medium", or "short".
 #' @param vibe A character string specifying the vibe of the graphic. Must be
-#' one of "bright", "neutral", "neon", or "soft".
-#' @param category A character string specifying whether the data is for artists
-#'  or
-#' tracks. Must be one of "artists" or "songs".
-#' @param dataset A data frame containing the user's top artists or tracks.
-#' Defaults to package data.
+#' one of "bright", "neon", "neutral", or "soft".
 #' @return The file path of the .png file.
+#' @param name A character string specifying the name of the graphic.
+#' @param saveto A character string specifying the directory where the graphic
+#' should be saved. Defaults to the current working directory.
 #'
 #'
 #' @import magick
 #' @import dplyr
 #' @export
-my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
-                        saveto = getwd(), dataset = data.frame()) {
+my_top_five <- function(data = data.frame(), category = "artists",
+                        time = "long", vibe = "neon", name = "top_five",
+                        saveto = getwd()) {
 
-  my_top_five_validation(time, vibe, category, name, saveto, dataset)
+  my_top_five_validation(time, vibe, category, name, saveto, data)
 
   background_relative <- paste0(category, "_", time, "_", vibe, ".png")
   background_path <- system.file("vibes", background_relative,
@@ -35,31 +36,31 @@ my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
   )
 
   background <- magick::image_read(background_path)
-  if (length(dataset) == 0) {
+  if (length(data) == 0) {
     if (category == "artists") {
       if (time == "long") {
-        dataset <- spotifywRapped::top_artists_longterm
+        data <- spotifywRapped::top_artists_longterm
       } else if (time == "medium") {
-        dataset <- spotifywRapped::top_artists_mediumterm
+        data <- spotifywRapped::top_artists_mediumterm
       } else if (time == "short") {
-        dataset <- spotifywRapped::top_artists_shortterm
+        data <- spotifywRapped::top_artists_shortterm
       }
-      image_url <- dataset$images[1][[1]]$url[[1]]
+      image_url <- data$images[1][[1]]$url[[1]]
     } else {
       if (time == "long") {
-        dataset <- spotifywRapped::top_tracks_longterm
+        data <- spotifywRapped::top_tracks_longterm
       } else if (time == "medium") {
-        dataset <- spotifywRapped::top_tracks_mediumterm
+        data <- spotifywRapped::top_tracks_mediumterm
       } else if (time == "short") {
-        dataset <- spotifywRapped::top_tracks_shortterm
+        data <- spotifywRapped::top_tracks_shortterm
       }
-      image_url <- dataset$album.images[1][[1]]$url[[1]]
+      image_url <- data$album.images[1][[1]]$url[[1]]
     }
   }
 
   mini_image <- magick::image_read(image_url)
   mini_image <- magick::image_resize(mini_image, "530x530")
-  names <- dataset$name[2:5]
+  names <- data$name[2:5]
   if (any(is.na(names))) {
     names[is.na(names)] <- ""
   }
@@ -73,7 +74,7 @@ my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
   file_name <- paste0(name, ".png")
   postables_path <- file.path(saveto, file_name)
 
-  generate_image(postables_path, background, mini_image, vibe, dataset,
+  generate_image(postables_path, background, mini_image, vibe, data,
                  box_coordinates)
 
   return(postables_path)
@@ -82,7 +83,7 @@ my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
 
 
 my_top_five_validation <- function(time, vibe, category = "artists",
-                                   name, saveto, dataset) {
+                                   name, saveto, data) {
   if (!is.character(time) || !is.character(vibe) || !is.character(category) ||
       !is.character(name)
   ) {
@@ -105,7 +106,7 @@ my_top_five_validation <- function(time, vibe, category = "artists",
 
 # Helper function to handle image generation
 generate_image <- function(postables_path, background, mini_image, vibe,
-                           dataset, coordinates) {
+                           data, coordinates) {
   png(postables_path, width = 1080, height = 1920)
 
 
@@ -138,7 +139,7 @@ generate_image <- function(postables_path, background, mini_image, vibe,
   textcolor <- ifelse(vibe == "bright" || vibe == "neon", "white", "black")
   text(
     x = (190 + 350) / 1080, y = (1920 - 350) / 1920,
-    labels = dataset$name[1], col = textcolor, cex = 3, adj = 0.5
+    labels = data$name[1], col = textcolor, cex = 3, adj = 0.5
   )
   text(
     x = coordinates$x, y = coordinates$y,
