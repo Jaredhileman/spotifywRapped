@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as png's in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
+The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
 
 ## Obtaining the Data
 
