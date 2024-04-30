@@ -122,7 +122,6 @@ generate_image <- function(postables_path, background, mini_image, vibe,
     xlab = "", ylab = "", main = "", bty = "n", ann = FALSE
   )
 
-  print(coordinates$label)
   for (label in coordinates$label) {
     if (nchar(label) > 30) {
       new_label <- paste0(substr(label, 1, 30), "...")
