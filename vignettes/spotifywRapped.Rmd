@@ -18,9 +18,68 @@ knitr::opts_chunk$set(
 
 The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
 
-## Obtaining the Data
+## Data Preprocessing
 
-In order to use spotifywRapped, the user must get their Spotify data using an API. To do this, the user must have Spotify Premium. Then, they can go to the "Spotify Developer Dashboard" and select "Create an app" in the dashboard. The user can fill in the rest of the information however they would like, but "Redirect URIs" needs to be filled in with "http://localhost:1410/." One the API is created, the user only needs to use the "client ID" and "client secret" to save their data into an rda rile. Simply replace these codes in the "DATASET.R" file and run it, and the data is ready to go.
+In order to use spotifywRapped, the user must get their Spotify data by interfacing with the Spotify API. Here are the steps a user must take to organize their data in a way that can be used by `spotifywRapped`. 
+
+1. The user must have Spotify developer account. Follow the instructions for creating a dev account linked here:
+https://developer.spotify.com/documentation/web-api. Save the client ID and client secret for use in Step 2.
+  i. When setting a URI, we recommend using "http://localhost:1410/".
+2. Use the `spotifyr` package (published to CRAN) to generate access and authorization tokens. The user may choose to set environment variables to include these tokens (avoids calling tokens in each function), as shown below. Otherwise, the user must include the tokens in each function call. Documentation for `spotifyr` can be found here: https://cran.r-project.org/web/packages/spotifyr/spotifyr.pdf
+
+```{r install_spotifyr, eval=FALSE}
+install.packages("spotifyr")
+library(spotifyr)
+
+Sys.setenv(SPOTIFY_CLIENT_ID = "your_client_id") # From dev dashboard
+Sys.setenv(SPOTIFY_CLIENT_ID = "your_client_secret") # From dev dashboard
+# 
+```
+
+3. The user is able to use the `get_top_artists_or_tracks()` and `get_my_saved_tracks()` functions from the `spotifyr` package to get their listening data. The user can then save this data to an rda file for use in the `spotifywRapped` package. Note that both these functions have a parameter called `offset`. Since the Spotify API only allows for a limit of 50 tracks / artists per call, the user must use the offset term to get more than 50 tracks of listening data. Please see below for a simple approach to pull the data:
+
+```{r offset_example, eval=FALSE}
+library(dplyr)
+
+# offset value
+offset_length <- ceiling(spotifyr::get_my_saved_tracks(
+  include_meta_info = TRUE,
+  authorization = authorization
+)[["total"]] / 50)
+offset_total <- (seq(offset_length) - 1) * 50
+
+# Obtain saved tracks
+saved_tracks <- data.frame()
+for (batch in offset_total) {
+  curr_saved_tracks <- spotifyr::get_my_saved_tracks(
+    limit = 50,
+    offset = batch, authorization = authorization
+  )
+  saved_tracks <- dplyr::bind_rows(saved_tracks, curr_saved_tracks)
+}
+```
+
+
+4. For the user's saved tracks, both `energy` and `valence` are not natively included in the data. The user must use the `get_track_audio_features()` function from the `spotifyr` package with each track's unique Spotify ID to get this information. The user can then merge this data with their saved tracks data to get a complete dataset. To get around the Spotify API rate limits, the user can use a batch size of 100 tracks per call and a sleep window of 30 seconds (corresponds to the Spotify API sliding window). Here is an example (assumes the user already have saved tracks in a datafame):
+
+```{r get_energy_valence, eval=FALSE}
+st <- saved_tracks
+
+for (i in seq_len(st)) {
+  if (i %% 100 == 0) {
+    print(paste0("Sleeping... ", i %/% 100))
+    Sys.sleep(30)
+  }
+  track_id <- st$track.id[i]
+  track_features <- spotifyr::get_track_audio_features(track_id,
+    authorization = access_token
+  )
+  st$energy[i] <- track_features$energy
+  st$valence[i] <- track_features$valence
+}
+```
+
+5. The user's Spotify API data should be appropriately processed and is ready for use in `spotifywRapped`.
 
 ## Energy & Valence Plots
 
@@ -38,8 +97,9 @@ Parameter options:
 
 - `saveto`: the directory to save the output file
 
+Here is an example of the energy vs valence plot:
 
-```{r enval}
+```{r enval, echo=TRUE}
 library(spotifywRapped)
 
 temp_save <- tempdir()
@@ -48,8 +108,6 @@ energy_valence_demo <- my_energy_valence(data = spotifywRapped::saved_tracks,
                                          name = "enval_neon")
 
 ```
-
-Here is an example of the energy vs valence plot:
 
 ![](`r energy_valence_demo`){width=450px height=800px}
 
@@ -75,6 +133,8 @@ Parameter options:
 The function will return the file path to the generated .png file.
 
 
+Here is an example of the top artist graphic from long-term listening history:
+
 ```{r top_artists}
 my_top_artists <- my_top_five(
   time = "long", vibe = "neutral", category = "artists",
@@ -82,7 +142,7 @@ my_top_artists <- my_top_five(
   saveto = temp_save
 )
 ```
-Here is an example of the top artist graphic from long-term listening history:
+
 ![](`r my_top_artists`){width=450px height=800px}
 
 Similarly, here is an example of the top tracks graphic from short-term listening:
@@ -111,6 +171,7 @@ Parameter options:
 - `saveto`: the directory to which the output file is saved
 
 
+Here is an example of the artist frequency graphic generated for the user's top tracks:
 
 ```{r artist_frequency_top}
 
@@ -123,9 +184,11 @@ artist_frequency_top_demo <- my_artist_frequency(
 ```
 
 
-Here is an example of the artist frequency graphic generated for the user's top tracks:
 
 ![](`r artist_frequency_top_demo`){width=450px height=800px}
+
+
+...and again for the user's saved tracks:
 
 ```{r artist_frequency_saved}
 artist_frequency_saved_demo <- my_artist_frequency(
@@ -135,7 +198,6 @@ artist_frequency_saved_demo <- my_artist_frequency(
 )
 ```
 
-...and again for the user's saved tracks:
 
 ![](`r artist_frequency_saved_demo`){width=450px height=800px}
 
