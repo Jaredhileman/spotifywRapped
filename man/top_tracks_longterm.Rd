@@ -20,7 +20,7 @@ features. Character}
 }
 }
 \source{
-\url{https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks}
+\url{https://developer.spotify.com/documentation/web-api}
 }
 \usage{
 top_tracks_longterm

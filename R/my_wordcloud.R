@@ -22,25 +22,9 @@
 my_wordcloud <- function(data = data.frame(),
                          category = "long", vibe = "neon",
                          name = "wordcloud", saveto = getwd()) {
-  # Check argument types
-  if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
-    stop("name, category, and vibe must be character strings")
-  }
 
-  # Check if vibe argument is valid
-  if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
-    stop("vibe must be one of 'bright', 'neutral', 'neon', or 'soft'")
-  }
+  my_wordcloud_validation(data, category, vibe, name, saveto)
 
-  # Check if category argument is valid
-  if (!(category %in% c("long", "saved"))) {
-    stop("category must be one of 'long' or 'saved'")
-  }
-
-  # Check if name is empty
-  if (name == "") {
-    warning("name cannot be an empty string, defaulted to 'my_wordcloud'")
-  }
 
   # Select data based on category
   if (category == "long") {
@@ -160,4 +144,21 @@ my_wordcloud <- function(data = data.frame(),
 
   # Return the file path of the saved image
   return(file_name)
+}
+
+my_wordcloud_validation <- function(data, category, vibe, name, saveto) {
+  # Check argument types
+  if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
+    stop("name, category, and vibe must be character strings")
+  }
+
+  # Check if vibe argument is valid
+  if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
+    stop("vibe must be one of 'bright', 'neutral', 'neon', or 'soft'")
+  }
+
+  # Check if category argument is valid
+  if (!(category %in% c("long", "saved"))) {
+    stop("category must be one of 'long' or 'saved'")
+  }
 }

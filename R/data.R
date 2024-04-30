@@ -14,7 +14,7 @@
 #'   \item{album.images}{Album cover image URL(s) to which the track belongs}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api>
 "top_tracks_shortterm"
 
 #' Top Tracks - Mediumterm
@@ -33,7 +33,7 @@
 #'   \item{album.images}{Album cover image URL(s) to which the track belongs}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api>
 "top_tracks_mediumterm"
 
 #' Top Tracks - Longterm
@@ -53,7 +53,7 @@
 #'   \item{album.images}{Album cover image URL(s) to which the track belongs}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api>
 "top_tracks_longterm"
 
 
@@ -72,7 +72,7 @@
 #'   \item{genres}{Artist's tracks' genres, stored as list}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api>
 "top_artists_shortterm"
 
 #' Top Artists - Mediumterm
@@ -90,7 +90,7 @@
 #'   \item{genres}{Artist's tracks' genres, stored as list}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api/>
 "top_artists_mediumterm"
 
 #' Top Artists - Longterm
@@ -109,7 +109,7 @@
 #'   \item{genres}{Artist's tracks' genres, stored as list}
 #'   ...
 #' }
-#' @source <https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks>
+#' @source <https://developer.spotify.com/documentation/web-api>
 "top_artists_longterm"
 
 
@@ -136,5 +136,5 @@
 #'  column. Numeric.}
 #'  ...
 #'  }
-#'  @source <https://developer.spotify.com/documentation/web-api/reference/get-users-saved-tracks>
+#'  @source <https://developer.spotify.com/documentation/web-api>
 "saved_tracks"

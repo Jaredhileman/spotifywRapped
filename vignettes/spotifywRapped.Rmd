@@ -15,12 +15,14 @@ knitr::opts_chunk$set(
 ```
 
 ## Github Repository
+
 You can access `spotifywRapped`'s Github repository by following this link: https://github.com/Jaredhileman/spotifywRapped
+
 ## Overview
 
 The spotifywRapped package is a valuable tool for visualizing a user's Spotify listening habits and history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as .pngs in Canva and placed in the `inst/vibe` folder within the internal package structure. The listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several visualization and graphic generation functions available for the user--let's take a look at how to use them.
 
-## Data Preprocessing
+## Data Processing
 
 In order to use spotifywRapped, the user must get their Spotify data by interfacing with the Spotify API. Here are the steps a user must take to organize their data for use by `spotifywRapped`.
 
@@ -37,12 +39,14 @@ Sys.setenv(SPOTIFY_CLIENT_ID = "your_client_id") # From dev dashboard
 Sys.setenv(SPOTIFY_CLIENT_SECRET = "your_client_secret") # From dev dashboard
 
 access_token <- get_spotify_access_token()
-
 authorization_code <- get_spotify_authorization_code(
-  scope = c("user-top-read", "user-library-read"))
-# 
+  scope = c(
+    "user-top-read",
+    "user-library-read"
+  )
+)
+#
 ```
-
 3. The user is able to use the `get_top_artists_or_tracks()` and `get_my_saved_tracks()` functions from `spotifyr` to get their listening data. The user can then save this data to an .rda file for use in the `spotifywRapped` package. Note that both these functions have a parameter called `offset`. Since the Spotify API only allows for a limit of 50 tracks / artists per call, the user must use the offset term to get all of the saved and top tracks from the data. Please see below for a simple approach to pull the data:
 
 ```{r offset_example, eval=FALSE}
@@ -115,9 +119,7 @@ temp_save <- tempdir()
 energy_valence_demo <- my_energy_valence(data = spotifywRapped::saved_tracks, 
                                          saveto = temp_save, vibe = "bright", 
                                          name = "enval_neon")
-
 ```
-
 ![](`r energy_valence_demo`){width=450px height=800px}
 
 ## Top Artists & Tracks Graphics
@@ -235,6 +237,10 @@ wordcloud_demo <- my_wordcloud(category = "long", vibe = "soft",
 
 ![](`r wordcloud_demo`){width=450px height=800px}
 
+## Behind the Scenes: Templates
+
+Based on which functions are called and which inputs are given, the relevant Canva templates stored in the `inst/vibes` folder are called and embedded into a plot. 
+For instance, a specification of `category = "songs"`,  `time = "long"`, and `vibe = "neon"` within the `my_top_five()` function would call the template titled `songs_long_neon.png`. Plot embedding is done using the `rasterImage` and `ggplot2` packages. Text is overlayed using the same packages, and the final plot is saved as a .png file using the .png graphics device.
 
 ## Datasets
 
@@ -257,7 +263,7 @@ The spotifywRapped package comes equipped with several example datasets that use
 
 ## Limitations
 
-- If users wish to use the `spotifywRapped` package for their own data, they must have a Spotify account and a Spotify Developer account. The package requires the user to have a Spotify API key to access their listening data. The package also requires the user to have preprocessed their data in the same way as done in the `DATASET.R` file.
+- If users wish to use the `spotifywRapped` package for their own data, they must have a Spotify account and a Spotify Developer account. The package requires the user to have a Spotify API key to access their listening data. The package also requires the user to have preprocessed their data in the same way as outlined in the Data Processing section.
 
 - Only 1000 observations were obtained for long-term top tracks and artists. Limits might be extended for medium and short term listening histories as well.
 
