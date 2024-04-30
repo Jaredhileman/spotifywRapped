@@ -255,6 +255,8 @@ The spotifywRapped package comes equipped with several example datasets that use
 
 - Only 1000 observations were obtained for long-term top tracks and artists. Limits might be extended for medium and short term listening histories as well.
 
+- Functionality is limited at this time to only 4 basic plotting options, but it could be expanded in the future.
+
 ## Summary 
 
-The spotifywRapped package provides a way for the user to visualize their listening history and patterns at any time (not just in December). Not only that, but the package uses numerical data to back up this information. With energy vs. valence plots, top artist and track breakdowns, artist frequency plots, and frequented artist wordclouds, the possibilities are endless. With spotifywRapped, Spotify Wrapped Day can be every day.
+The spotifywRapped package provides a way for the user to visualize their listening history and patterns at any time (not just on a random day in December). The API data updates constantly, so users are able to get extremely up to date information when they generate their plots. The package uses numerical data and analysis within these graphics to further inform the user of their listening. They are also able to choose the vibe of these plots to enjoy unique and improved aesthetics compared to the basic Spotify Wrapped options. With energy vs. valence plots, top artist and track breakdowns, artist frequency plots, and frequent artist wordclouds, the possibilities are nearly endless. With spotifywRapped, Spotify Wrapped Day can be every day.
