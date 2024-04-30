@@ -14,9 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Github Repository
+You can access `spotifywRapped`'s Github repository by following this link: https://github.com/Jaredhileman/spotifywRapped
 ## Overview
 
-The spotifywRapped package is a valuable tool for visualizing a user's Spotify listening habits and history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R where graphics and personalized text are plotted on top. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several visualization functions available for the user--let's take a look at how to use them.
+The spotifywRapped package is a valuable tool for visualizing a user's Spotify listening habits and history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as .pngs in Canva and placed in the `inst/vibe` folder within the internal package structure. The listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several visualization and graphic generation functions available for the user--let's take a look at how to use them.
 
 ## Data Preprocessing
 
@@ -24,7 +26,7 @@ In order to use spotifywRapped, the user must get their Spotify data by interfac
 
 1. The user must have Spotify developer account. Follow the instructions for creating a dev account linked here:
 https://developer.spotify.com/documentation/web-api. Save the client ID and client secret for use in Step 2.
-  i. When setting a URI, we recommend using "http://localhost:1410/".
+  - When setting a URI, we recommend using "http://localhost:1410/".
 2. Use the `spotifyr` package (published to CRAN) to generate access and authorization tokens. The user may choose to set environment variables to include these tokens (avoids calling tokens in each function), as shown below. Otherwise, the user must include the tokens in each function call. Scopes must be specified while getting the authorization token.  `spotifywRapped` requires the "user-top-read" and "user-library-read" access. Documentation for `spotifyr` can be found here: https://cran.r-project.org/web/packages/spotifyr/spotifyr.pdf
 
 ```{r install_spotifyr, eval=FALSE}
@@ -86,6 +88,8 @@ for (i in seq_len(st)) {
 
 5. The user's Spotify API data should be appropriately processed and is ready for use in `spotifywRapped`.
 
+NOTE: The `spotifyr` package nicely compacts the requested data into a dataframe. For insight into the specific structure of these datasets, please refer to the documentation for `spotifywRapped::saved_tracks` and `spotifywRapped::top_artists_longterm`.
+
 ## Energy & Valence Plots
 
 The energy vs valence plot gives a visual summary of the general "vibe" a user tends to enjoy in their music. Using the user's saved tracks, the plot shows the distribution of songs across four quadrants, each representing a different mood.  Energy and valence are measured between 0 and 1, so values below 0.5 are considered "low valence" and "low energy", while values above 0.5 are considered "high valence" and "high energy".  The scatter plot of energy vs. valence is printed, as well as the mood name of the quadrant with the most data points.
@@ -94,7 +98,7 @@ The function takes the user's listening data, vibe choice, filename, and save lo
 
 Parameter options:
 
-- `data`: the user's saved track data
+- `data`: the user's saved track data. If none specified, defaults to `spotifywRapped::saved_tracks`.
 
 - `vibe`: "soft", "neon", "neutral", or "bright"
 
@@ -126,13 +130,13 @@ Parameter options:
 
 - `vibe`: "soft", "neon", "neutral", or "bright"
 
-- `kind`: "artists" or "songs"
+- `category`: "artists" or "songs"
 
 - `name`: the name of the output file
 
 - `saveto`: the directory to save the output file
 
-- `data`: the user's listening data
+- `data`: the user's listening data. If none specified, defaults to package data based on `time` and `category` arguments.
 
 
 The function will return the file path to the generated .png file.
@@ -167,7 +171,7 @@ Parameter options:
 
 - `category`: "top" or "saved"
 
-- `data`: the user's saved track data or top track data
+- `data`: the user's saved track data or top track data. If none specified, defaults to package data based on `category` arguments (`spotifywRapped::top_tracks_longterm` if `top` is specified).
 
 - `vibe`: "soft", "neon", "neutral", or "bright"
 
@@ -212,7 +216,9 @@ Finally, we have the `wordcloud` function, which generates a word cloud of the u
 
 Parameter options:
 
-- `data`: the user's saved track data
+- `category`: "top" or "saved"
+
+- `data`: the user's saved track data. If none specified, defaults to package data based on `category` arguments (`spotifywRapped::top_tracks_longterm` if `top` is specified. 
 
 - `vibe`: "soft", "neon", "neutral", or "bright"
 
@@ -232,7 +238,7 @@ wordcloud_demo <- my_wordcloud(category = "long", vibe = "soft",
 
 ## Datasets
 
-The spotifywRapped package comes equipped with several example datasets that users can use to test the package's functions. These datasets were pulled from one of the author's personal Spotify account. The datasets are as follows:
+The spotifywRapped package comes equipped with several example datasets that users can use to test the package's functions. These datasets were pulled from an author's personal Spotify account. The datasets are as follows:
 
 - `saved_tracks`: a dataset containing the user's saved tracks from all time
 
@@ -255,7 +261,7 @@ The spotifywRapped package comes equipped with several example datasets that use
 
 - Only 1000 observations were obtained for long-term top tracks and artists. Limits might be extended for medium and short term listening histories as well.
 
-- Functionality is limited at this time to only 4 basic plotting options, but it could be expanded in the future.
+- Functionality is limited at this time to only 4 basic plotting options, but it could be expanded in the future. Note that to do so would require generating and adding additional background graphics to the `inst/vibes` folder within the internal package structure.
 
 ## Summary 
 
