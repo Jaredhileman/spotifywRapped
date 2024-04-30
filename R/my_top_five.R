@@ -12,7 +12,7 @@
 #' @param time A character string specifying the time frame for the data. Must
 #' be one of "long", "medium", or "short".
 #' @param vibe A character string specifying the vibe of the graphic. Must be
-#' one of "bright", "dark", "neon", or "soft".
+#' one of "bright", "neutral", "neon", or "soft".
 #' @param category A character string specifying whether the data is for artists
 #'  or
 #' tracks. Must be one of "artists" or "songs".
@@ -98,7 +98,7 @@ my_top_five_validation <- function(time, vibe, category = "artists",
   }
 
   if (!(vibe %in% c("bright", "neutral", "neon", "soft"))) {
-    stop("vibe must be one of 'bright', 'dark', 'neon', or 'soft'")
+    stop("vibe must be one of 'bright', 'neutral', 'neon', or 'soft'")
   }
 }
 
@@ -108,7 +108,16 @@ generate_image <- function(postables_path, background, mini_image, vibe,
                            dataset, coordinates) {
   png(postables_path, width = 1080, height = 1920)
 
-  par(mar = c(0, 0, 0, 0)) # Set all margins to zero
+
+  bck <- "white"
+  if (vibe == "neon") {
+    bck <- "black"
+  } else if (vibe == "bright") {
+    bck <- "#1e1d1d"
+  }
+
+  par(bg = bck, mar = c(0, 0, 0, 0))
+
   plot(0, type = "n", xlim = c(0, 1), ylim = c(0, 1), xaxt = "n", yaxt = "n",
     xlab = "", ylab = "", main = "", bty = "n", ann = FALSE
   )

@@ -158,11 +158,17 @@ usethis::use_data(saved_tracks, overwrite = TRUE)
 
 
 ###################################
-# Adding artists to long, med, short term tracks
+# Adding artists to long, med, short term, saved tracks
 lt_tracks <- spotifywRapped::top_tracks_longterm
 mt_tracks <- spotifywRapped::top_tracks_mediumterm
 st_tracks <- spotifywRapped::top_tracks_shortterm
 
+sv_tracks <- spotifywRapped::saved_tracks
+
+
+for (i in seq_len(nrow(sv_tracks))) {
+  sv_tracks$artist[i] <- sv_tracks$track.artists[[i]]$name[[1]]
+}
 
 for (i in seq_len(nrow(lt_tracks))) {
   lt_tracks$artist[i] <- lt_tracks$artists[[i]]$name[[1]]
@@ -179,7 +185,10 @@ for (i in seq_len(nrow(st_tracks))) {
 top_tracks_longterm <- lt_tracks
 top_tracks_mediumterm <- mt_tracks
 top_tracks_shortterm <- st_tracks
+saved_tracks <- sv_tracks
 
 usethis::use_data(top_tracks_longterm, overwrite = TRUE)
 usethis::use_data(top_tracks_mediumterm, overwrite = TRUE)
 usethis::use_data(top_tracks_shortterm, overwrite = TRUE)
+usethis::use_data(saved_tracks, overwrite = TRUE)
+

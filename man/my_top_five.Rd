@@ -18,7 +18,7 @@ my_top_five(
 be one of "long", "medium", or "short".}
 
 \item{vibe}{A character string specifying the vibe of the graphic. Must be
-one of "bright", "dark", "neon", or "soft".}
+one of "bright", "neutral", "neon", or "soft".}
 
 \item{category}{A character string specifying whether the data is for artists
 or
