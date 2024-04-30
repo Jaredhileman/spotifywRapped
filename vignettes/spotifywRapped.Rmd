@@ -16,27 +16,32 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The spotifywRapped package is a great tool for visualizing a user's Spotify listening history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R to add graphics and personalized text. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several kinds of built-in visualization options a user has at their disposal--let's take a look at how to use them.
+The spotifywRapped package is a valuable tool for visualizing a user's Spotify listening habits and history. The package comes equipped with several preset themes, called "vibes", that a user can choose to customize their visualization experience. These themes were created as pngs in Canva, and exported to R where graphics and personalized text are plotted on top. Moreover, the listener can choose whether they want to view their long-term, medium-term, or short-term listening history or information about their saved (liked) tracks. There are several visualization functions available for the user--let's take a look at how to use them.
 
 ## Data Preprocessing
 
-In order to use spotifywRapped, the user must get their Spotify data by interfacing with the Spotify API. Here are the steps a user must take to organize their data in a way that can be used by `spotifywRapped`. 
+In order to use spotifywRapped, the user must get their Spotify data by interfacing with the Spotify API. Here are the steps a user must take to organize their data for use by `spotifywRapped`.
 
 1. The user must have Spotify developer account. Follow the instructions for creating a dev account linked here:
 https://developer.spotify.com/documentation/web-api. Save the client ID and client secret for use in Step 2.
   i. When setting a URI, we recommend using "http://localhost:1410/".
-2. Use the `spotifyr` package (published to CRAN) to generate access and authorization tokens. The user may choose to set environment variables to include these tokens (avoids calling tokens in each function), as shown below. Otherwise, the user must include the tokens in each function call. Documentation for `spotifyr` can be found here: https://cran.r-project.org/web/packages/spotifyr/spotifyr.pdf
+2. Use the `spotifyr` package (published to CRAN) to generate access and authorization tokens. The user may choose to set environment variables to include these tokens (avoids calling tokens in each function), as shown below. Otherwise, the user must include the tokens in each function call. Scopes must be specified while getting the authorization token.  `spotifywRapped` requires the "user-top-read" and "user-library-read" access. Documentation for `spotifyr` can be found here: https://cran.r-project.org/web/packages/spotifyr/spotifyr.pdf
 
 ```{r install_spotifyr, eval=FALSE}
 install.packages("spotifyr")
 library(spotifyr)
 
 Sys.setenv(SPOTIFY_CLIENT_ID = "your_client_id") # From dev dashboard
-Sys.setenv(SPOTIFY_CLIENT_ID = "your_client_secret") # From dev dashboard
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "your_client_secret") # From dev dashboard
+
+access_token <- get_spotify_access_token()
+
+authorization_code <- get_spotify_authorization_code(
+  scope = c("user-top-read", "user-library-read"))
 # 
 ```
 
-3. The user is able to use the `get_top_artists_or_tracks()` and `get_my_saved_tracks()` functions from the `spotifyr` package to get their listening data. The user can then save this data to an rda file for use in the `spotifywRapped` package. Note that both these functions have a parameter called `offset`. Since the Spotify API only allows for a limit of 50 tracks / artists per call, the user must use the offset term to get more than 50 tracks of listening data. Please see below for a simple approach to pull the data:
+3. The user is able to use the `get_top_artists_or_tracks()` and `get_my_saved_tracks()` functions from `spotifyr` to get their listening data. The user can then save this data to an .rda file for use in the `spotifywRapped` package. Note that both these functions have a parameter called `offset`. Since the Spotify API only allows for a limit of 50 tracks / artists per call, the user must use the offset term to get all of the saved and top tracks from the data. Please see below for a simple approach to pull the data:
 
 ```{r offset_example, eval=FALSE}
 library(dplyr)
@@ -60,7 +65,7 @@ for (batch in offset_total) {
 ```
 
 
-4. For the user's saved tracks, both `energy` and `valence` are not natively included in the data. The user must use the `get_track_audio_features()` function from the `spotifyr` package with each track's unique Spotify ID to get this information. The user can then merge this data with their saved tracks data to get a complete dataset. To get around the Spotify API rate limits, the user can use a batch size of 100 tracks per call and a sleep window of 30 seconds (corresponds to the Spotify API sliding window). Here is an example (assumes the user already have saved tracks in a datafame):
+4. Neither `energy` or `valence` are included in the saved_tracks data. The user must use the `get_track_audio_features()` function from the `spotifyr` package with each track's unique Spotify ID to get this information. The user can then merge this data with their saved tracks data to get a complete dataset. To get around the Spotify API rate limits, the user can use a batch size of 100 tracks per call and a sleep window of 30 seconds (corresponds to the Spotify API sliding window). Here is an example (assumes the user already have saved tracks in a datafame):
 
 ```{r get_energy_valence, eval=FALSE}
 st <- saved_tracks
@@ -83,7 +88,7 @@ for (i in seq_len(st)) {
 
 ## Energy & Valence Plots
 
-The energy vs valence plot gives a visual summary of the general "vibe" a user tends towards in their favorite music. Using the user's saved tracks, the plot shows the distribution of songs across four quadrants, each representing a different mood.
+The energy vs valence plot gives a visual summary of the general "vibe" a user tends to enjoy in their music. Using the user's saved tracks, the plot shows the distribution of songs across four quadrants, each representing a different mood.  Energy and valence are measured between 0 and 1, so values below 0.5 are considered "low valence" and "low energy", while values above 0.5 are considered "high valence" and "high energy".  The scatter plot of energy vs. valence is printed, as well as the mood name of the quadrant with the most data points.
 
 The function takes the user's listening data, vibe choice, filename, and save location as arguments. It outputs a .png file to the save location of the user's choice and returns the image's file path.
 
@@ -113,7 +118,7 @@ energy_valence_demo <- my_energy_valence(data = spotifywRapped::saved_tracks,
 
 ## Top Artists & Tracks Graphics
 
-Yet another fascinating visual implemented into the spotifywRapped package is the `my_top_five` function graphics library. This visualization shows the user's top five most frequently listened to artists and tracks over all time, the past 6 months, or the past 4 weeks. 
+Another interesting visual implemented in the spotifywRapped package is the `my_top_five` function graphic. This visualization shows the user's top five most frequently listened to artists and tracks over all time, the past 6 months, or the past 4 weeks. It prints the name of each of the top five tracks or artists and an image of the #1 song/artist.
 
 Parameter options:
 
@@ -127,7 +132,7 @@ Parameter options:
 
 - `saveto`: the directory to save the output file
 
-- `dataset`: the user's listening data
+- `data`: the user's listening data
 
 
 The function will return the file path to the generated .png file.
@@ -149,14 +154,14 @@ Similarly, here is an example of the top tracks graphic from short-term listenin
 
 ```{r top_tracks}
 my_top_tracks <- my_top_five(time = "short", vibe = "neon", category = "songs",
-                             name = "My_Top_Tracks_shortterm", 
+                             name = "my_top_tracks_shortterm", 
                              saveto = temp_save)
 ```
 ![](`r my_top_tracks`){width=450px height=800px}
 
 ## Artist Frequency
 
-Next, we have the `artist_frequency` function, which generates a bar graph of the user's most frequently listened to artists from the user's saved tracks or top tracks of all time. The function takes the user's category, vibe, name choice, and save location as arguments. The function will return the file path to the generated .png file.
+Next, we have the `my_artist_frequency` function, which generates a bar graph of the user's most frequently listened to artists from the user's saved tracks or top tracks of all time. The function takes the user's category, vibe, name choice, and save location as arguments. It plots a bar graph with counts of songs from each of the top 10 artists and prints the name and number of the most frequent. The function will return the file path to the generated .png file.
 
 Parameter options:
 
@@ -203,7 +208,7 @@ artist_frequency_saved_demo <- my_artist_frequency(
 
 ## Wordcloud - Frequented Artists
 
-Finally, we have the `wordcloud` function, which generates a word cloud of the top 20 of the user's most frequently listened to artists from the user's saved tracks. The function takes the user's saved tracks, vibe, file name, and save location as arguments. The function will return the file path to the generated .png file.
+Finally, we have the `wordcloud` function, which generates a word cloud of the user's most frequently listened to artists from the user's saved or top tracks. The function takes the user's listening data, vibe, file name, and save location as arguments. It plots the word cloud over the backing graphic. The function will return the file path to the generated .png file. Note that the user must have phantom_js added to their PATH environment variable. This can easily be done using the `webshot` package with "webshot::install_phantomjs()".
 
 Parameter options:
 
@@ -215,7 +220,15 @@ Parameter options:
 
 - `saveto`: the directory to save the output file
 
-The wordcloud option is still under development. Please check back on future updates for this feature.
+```{r wordcloud}
+wordcloud_demo <- my_wordcloud(category = "long", vibe = "soft",
+                               name = "wordcloud_top_artists",
+                               saveto = temp_save)
+```
+
+
+![](`r wordcloud_demo`){width=450px height=800px}
+
 
 ## Datasets
 
