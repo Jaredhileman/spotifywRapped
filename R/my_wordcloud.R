@@ -1,7 +1,7 @@
 #' Generate a Frequent Listened Artists' Name plot based on Spotify data
 #'
-#' @param data Character string indicating the type of Spotify data to use.
-#'  Can be "long" for long-term top tracks or "saved" for saved tracks.
+#' @param data Dataframe indicating the Spotify data to use. \
+#' Defaults to blank data frame
 #' @param category Character string indicating the category for the data. Must
 #'  be one of "long" or "saved". Default is "long."
 #' @param vibe Character string indicating the vibe of the word cloud.
@@ -44,7 +44,9 @@ my_wordcloud <- function(data = data.frame(),
 
   # Select data based on category
   if (category == "long") {
-    data <- spotifywRapped::top_tracks_longterm
+    if (length(data) == 0) {
+      data <- spotifywRapped::top_tracks_longterm
+    }
     artist_names <- vector("list", length = nrow(data))
     for (i in seq_len(nrow(data))) {
       artist_names[[i]] <- data$artists[[i]]$name
@@ -66,7 +68,9 @@ my_wordcloud <- function(data = data.frame(),
       )
     )
   } else {
-    data <- spotifywRapped::saved_tracks
+    if (length(data) == 0) {
+      data <- spotifywRapped::saved_tracks
+    }
     artist_names <- vector("list", length = nrow(data))
     for (i in seq_len(nrow(data))) {
       artist_names[[i]] <- data$artist[i]

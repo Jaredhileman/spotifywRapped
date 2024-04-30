@@ -4,7 +4,7 @@
 #'   each artist.
 #'
 #' @param data A data frame containing the user's saved or top tracks.
-#'   Defaults to package data.
+#'   Defaults to blank dataframe.
 #' @param category A character string specifying whether the tracks come from
 #'   the saved or top tracks.
 #' @param vibe A character string specifying the vibe of the graphic. Must be

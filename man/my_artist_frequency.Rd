@@ -14,7 +14,7 @@ my_artist_frequency(
 }
 \arguments{
 \item{data}{A data frame containing the user's saved or top tracks.
-Defaults to package data.}
+Defaults to blank dataframe.}
 
 \item{category}{A character string specifying whether the tracks come from
 the saved or top tracks.}

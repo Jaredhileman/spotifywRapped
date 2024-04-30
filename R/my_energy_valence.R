@@ -6,7 +6,7 @@
 #' graph contains the most points.
 #'
 #' @param data a data frame containing songs and values between 0 and 1 for
-#' energy and valence.  Defaults to relevant data from data raw folder.
+#' energy and valence.  Defaults to blank dataframe.
 #' @param vibe string that specifies the background colors and graphics.
 #' Either "soft", "neon", "neutral", or "bright".
 #' @param name string to be used as the name for the output file.
@@ -23,9 +23,13 @@
 #'
 #'
 #' @export
-my_energy_valence <- function(data = spotifywRapped::saved_tracks,
+my_energy_valence <- function(data = data.frame(),
                               vibe = "neon", name = "energy_valence",
                               saveto = getwd()) {
+
+  if (length(data) == 0) {
+    data <- spotifywRapped::saved_tracks
+  }
 
   file_name <- file.path(saveto, paste0(name, ".png"))
 

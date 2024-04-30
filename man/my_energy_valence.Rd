@@ -5,7 +5,7 @@
 \title{Create an energy valence plot}
 \usage{
 my_energy_valence(
-  data = spotifywRapped::saved_tracks,
+  data = data.frame(),
   vibe = "neon",
   name = "energy_valence",
   saveto = getwd()
@@ -13,7 +13,7 @@ my_energy_valence(
 }
 \arguments{
 \item{data}{a data frame containing songs and values between 0 and 1 for
-energy and valence.  Defaults to relevant data from data raw folder.}
+energy and valence.  Defaults to blank dataframe.}
 
 \item{vibe}{string that specifies the background colors and graphics.
 Either "soft", "neon", "neutral", or "bright".}
