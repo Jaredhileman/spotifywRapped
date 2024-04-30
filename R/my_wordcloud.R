@@ -1,9 +1,9 @@
 #' Generate a Frequent Listened Artists' Name plot based on Spotify data
 #'
-#' @param category Character string indicating the category for the data. Must
-#'  be one of "long" or "saved". Default is "saved."
 #' @param data Character string indicating the type of Spotify data to use.
 #'  Can be "long" for long-term top tracks or "saved" for saved tracks.
+#' @param category Character string indicating the category for the data. Must
+#'  be one of "long" or "saved". Default is "saved."
 #' @param vibe Character string indicating the vibe of the word cloud.
 #'  Can be one of "bright", "neutral", "neon", or "soft".
 #' @param name Character string indicating the name of the output file.
@@ -19,10 +19,9 @@
 #' @importFrom utils head
 #'
 #' @export
-frequent_listened_artists <- function(category = "saved",
-                                      data = spotifywRapped::saved_tracks,
-                                      vibe = "neon",
-                                      name = "untitled", saveto = getwd()) {
+my_wordcloud <- function(data = spotifywRapped::saved_tracks,
+                         category = "saved", vibe = "neon",
+                         name = "wordcloud", saveto = getwd()) {
   # Check argument types
   if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
     stop("name, category, and vibe must be character strings")
@@ -54,16 +53,16 @@ frequent_listened_artists <- function(category = "saved",
     # Define background images
     background_image <- list(
       "soft" = system.file("vibes", "wordcloud_top_soft.png",
-                           package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "neutral" = system.file("vibes", "wordcloud_top_neutral.png",
-                              package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "neon" = system.file("vibes", "wordcloud_top_neon.png",
-                           package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "bright" = system.file("vibes", "wordcloud_top_bright.png",
-                             package = "spotifywRapped"
+        package = "spotifywRapped"
       )
     )
   } else {
@@ -75,16 +74,16 @@ frequent_listened_artists <- function(category = "saved",
     # Define background images
     background_image <- list(
       "soft" = system.file("vibes", "wordcloud_saved_soft.png",
-                           package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
-                              package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "neon" = system.file("vibes", "wordcloud_saved_neon.png",
-                           package = "spotifywRapped"
+        package = "spotifywRapped"
       ),
       "bright" = system.file("vibes", "wordcloud_saved_bright.png",
-                             package = "spotifywRapped"
+        package = "spotifywRapped"
       )
     )
   }
@@ -119,9 +118,9 @@ frequent_listened_artists <- function(category = "saved",
 
   # Create word cloud
   wordcloud <- wordcloud2::wordcloud2(artist_freq,
-                                      color = color_vector,
-                                      shape = "cardioid", size = .2,
-                                      backgroundColor = background[[vibe]]
+    color = color_vector,
+    shape = "cardioid", size = .2,
+    backgroundColor = background[[vibe]]
   )
 
   # Save word cloud as HTML file
@@ -137,10 +136,10 @@ frequent_listened_artists <- function(category = "saved",
     fileext = ".png"
   )
   webshot::webshot(wordcloud_html_file,
-                   wordcloud_png_file,
-                   vwidth = 1080,
-                   vheight = 1920,
-                   delay = 1
+    wordcloud_png_file,
+    vwidth = 1080,
+    vheight = 1920,
+    delay = 1
   )
 
   # Read the captured PNG image

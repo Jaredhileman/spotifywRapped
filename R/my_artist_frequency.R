@@ -3,7 +3,7 @@
 #' Create a bar graph demonstrating the top 10 artists, and how many songs of
 #'   each artist.
 #'
-#' @param dataset A data frame containing the user's saved or top tracks.
+#' @param data A data frame containing the user's saved or top tracks.
 #'   Defaults to package data.
 #' @param category A character string specifying whether the tracks come from
 #'   the saved or top tracks.
@@ -24,7 +24,7 @@
 #'
 #' @return The file path of the .png file.
 #' @export
-my_artist_frequency <- function(dataset = data.frame(),
+my_artist_frequency <- function(data = data.frame(),
                                 category = "saved",
                                 vibe = "neon",
                                 name = "artist_frequency",
@@ -33,18 +33,18 @@ my_artist_frequency <- function(dataset = data.frame(),
   file_name <- file.path(saveto, paste0(name, ".png"))
 
   # choose dataset
-  if (length(dataset) == 0) {
+  if (length(data) == 0) {
     if (category == "top") {
-      dataset <- spotifywRapped::top_tracks_longterm
+      data <- spotifywRapped::top_tracks_longterm
     } else {
-      dataset <- spotifywRapped::saved_tracks
+      data <- spotifywRapped::saved_tracks
     }
   }
 
 
 
   # arranging data
-  occurences <- table(unlist(dataset$artist))
+  occurences <- table(unlist(data$artist))
   df <- as.data.frame(occurences)
   data_sorted <- df[order(df$Freq, decreasing = TRUE), ]
 

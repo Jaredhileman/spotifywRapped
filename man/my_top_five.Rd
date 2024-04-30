@@ -5,32 +5,31 @@
 \title{Visualize your top five artists or tracks}
 \usage{
 my_top_five(
-  time,
-  vibe,
+  data = data.frame(),
   category = "artists",
-  name = "my_top_five",
-  saveto = getwd(),
-  dataset = data.frame()
+  time = "long",
+  vibe = "neon",
+  name = "top_five",
+  saveto = getwd()
 )
 }
 \arguments{
+\item{data}{A data frame containing the user's top artists or tracks.
+Defaults to package data.}
+
+\item{category}{A character string specifying whether the data is for artists
+or tracks. Must be one of "artists" or "songs".}
+
 \item{time}{A character string specifying the time frame for the data. Must
 be one of "long", "medium", or "short".}
 
 \item{vibe}{A character string specifying the vibe of the graphic. Must be
-one of "bright", "neutral", "neon", or "soft".}
-
-\item{category}{A character string specifying whether the data is for artists
-or
-tracks. Must be one of "artists" or "songs".}
+one of "bright", "neon", "neutral", or "soft".}
 
 \item{name}{A character string specifying the name of the graphic.}
 
 \item{saveto}{A character string specifying the directory where the graphic
 should be saved. Defaults to the current working directory.}
-
-\item{dataset}{A data frame containing the user's top artists or tracks.
-Defaults to package data.}
 }
 \value{
 The file path of the .png file.
