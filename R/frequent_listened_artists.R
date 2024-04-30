@@ -1,7 +1,7 @@
 #' Generate a Frequent Listened Artists' Name plot based on Spotify data
 #'
 #' @param category Character string indicating the category for the data. Must
-#'  be one of "long" or "saved".
+#'  be one of "long" or "saved". Default is "saved."
 #' @param data Character string indicating the type of Spotify data to use.
 #'  Can be "long" for long-term top tracks or "saved" for saved tracks.
 #' @param vibe Character string indicating the vibe of the word cloud.
@@ -13,17 +13,16 @@
 #' @return A character string indicating the path to the saved word cloud image.
 #'
 #' @importFrom htmlwidgets saveWidget
-#' @importFrom webshot webshot
+#' @importFrom webshot webshot install_phantomjs
 #' @importFrom magick image_read image_crop
 #' @importFrom cowplot ggdraw draw_image
 #' @importFrom utils head
 #'
 #' @export
-frequent_listened_artists <- function(category,
+frequent_listened_artists <- function(category = "saved",
                                       data = spotifywRapped::saved_tracks,
                                       vibe = "neon",
                                       name = "untitled", saveto = getwd()) {
-
   # Check argument types
   if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
     stop("name, category, and vibe must be character strings")
@@ -55,13 +54,17 @@ frequent_listened_artists <- function(category,
     # Define background images
     background_image <- list(
       "soft" = system.file("vibes", "wordcloud_top_soft.png",
-                           package = "spotifywRapped"),
+                           package = "spotifywRapped"
+      ),
       "neutral" = system.file("vibes", "wordcloud_top_neutral.png",
-                              package = "spotifywRapped"),
+                              package = "spotifywRapped"
+      ),
       "neon" = system.file("vibes", "wordcloud_top_neon.png",
-                           package = "spotifywRapped"),
+                           package = "spotifywRapped"
+      ),
       "bright" = system.file("vibes", "wordcloud_top_bright.png",
-                             package = "spotifywRapped")
+                             package = "spotifywRapped"
+      )
     )
   } else {
     data <- spotifywRapped::saved_tracks
@@ -72,13 +75,17 @@ frequent_listened_artists <- function(category,
     # Define background images
     background_image <- list(
       "soft" = system.file("vibes", "wordcloud_saved_soft.png",
-                           package = "spotifywRapped"),
+                           package = "spotifywRapped"
+      ),
       "neutral" = system.file("vibes", "wordcloud_saved_neutral.png",
-                              package = "spotifywRapped"),
+                              package = "spotifywRapped"
+      ),
       "neon" = system.file("vibes", "wordcloud_saved_neon.png",
-                           package = "spotifywRapped"),
+                           package = "spotifywRapped"
+      ),
       "bright" = system.file("vibes", "wordcloud_saved_bright.png",
-                             package = "spotifywRapped")
+                             package = "spotifywRapped"
+      )
     )
   }
 
@@ -88,7 +95,6 @@ frequent_listened_artists <- function(category,
   # Get artist frequencies
   artist_freq <- as.data.frame(table(unlist(artist_names)))
   colnames(artist_freq) <- c("name", "freq")
-  artist_freq <- head(artist_freq[order(-artist_freq$freq), ], 20)
   artist_freq <- artist_freq[order(-artist_freq$freq), ]
 
   # Define color schemes
@@ -100,34 +106,42 @@ frequent_listened_artists <- function(category,
   )
 
   # Define background colors
-  background <- list("soft" = "white",
-                     "neon" = "black",
-                     "neutral" = "white",
-                     "bright" = "#1e1d1d")
+  background <- list(
+    "soft" = "white",
+    "neon" = "black",
+    "neutral" = "white",
+    "bright" = "#1e1d1d"
+  )
 
   # Select colors and background based on vibe
-  colors <-  vibe_colors[[vibe]]
+  colors <- vibe_colors[[vibe]]
   color_vector <- rep(colors, length.out = nrow(artist_freq))
 
   # Create word cloud
-  wordcloud <- wordcloud2::wordcloud2(artist_freq, gridSize = 0.1,
-                                      color = color_vector, shape = "cardioid",
-                                      fontWeight = 50, shuffle = TRUE, size = 1,
-                                      backgroundColor = background[[vibe]])
+  wordcloud <- wordcloud2::wordcloud2(artist_freq,
+                                      color = color_vector,
+                                      shape = "cardioid", size = .2,
+                                      backgroundColor = background[[vibe]]
+  )
 
   # Save word cloud as HTML file
-  wordcloud_html_file <- tempfile(pattern = "file", tmpdir = tempdir(),
-                                  fileext = ".html")
+  wordcloud_html_file <- tempfile(
+    pattern = "file", tmpdir = tempdir(),
+    fileext = ".html"
+  )
   htmlwidgets::saveWidget(wordcloud, wordcloud_html_file, selfcontained = FALSE)
 
   # Capture word cloud as PNG
-  wordcloud_png_file <- tempfile(pattern = "file", tmpdir = tempdir(),
-                                 fileext = ".png")
+  wordcloud_png_file <- tempfile(
+    pattern = "file", tmpdir = tempdir(),
+    fileext = ".png"
+  )
   webshot::webshot(wordcloud_html_file,
                    wordcloud_png_file,
                    vwidth = 1080,
                    vheight = 1920,
-                   delay = 1)
+                   delay = 1
+  )
 
   # Read the captured PNG image
   image <- magick::image_read(wordcloud_png_file)
@@ -137,12 +151,8 @@ frequent_listened_artists <- function(category,
 
   # Save the cropped image
   png(filename = file_name, width = 1080, height = 1920, units = "px")
-  print(
-    cowplot::ggdraw() +
-      cowplot::draw_image(background_image[[vibe]], x = 0, y = 0, width = 1,
-                          height = 1) +
-      cowplot::draw_image(cropped_image, x = 0, y = 0, width = 1, height = 1)
-  )
+  print(cowplot::ggdraw() + cowplot::draw_image(background_image[[vibe]]) +
+          cowplot::draw_image(cropped_image))
   dev.off()
 
   # Return the file path of the saved image
