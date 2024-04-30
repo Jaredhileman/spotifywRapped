@@ -3,7 +3,7 @@
 #' @param data Character string indicating the type of Spotify data to use.
 #'  Can be "long" for long-term top tracks or "saved" for saved tracks.
 #' @param category Character string indicating the category for the data. Must
-#'  be one of "long" or "saved". Default is "saved."
+#'  be one of "long" or "saved". Default is "long."
 #' @param vibe Character string indicating the vibe of the word cloud.
 #'  Can be one of "bright", "neutral", "neon", or "soft".
 #' @param name Character string indicating the name of the output file.
@@ -19,8 +19,8 @@
 #' @importFrom utils head
 #'
 #' @export
-my_wordcloud <- function(data = spotifywRapped::saved_tracks,
-                         category = "saved", vibe = "neon",
+my_wordcloud <- function(data = data.frame(),
+                         category = "long", vibe = "neon",
                          name = "wordcloud", saveto = getwd()) {
   # Check argument types
   if (!is.character(vibe) || !is.character(name) || !is.character(category)) {
@@ -39,7 +39,7 @@ my_wordcloud <- function(data = spotifywRapped::saved_tracks,
 
   # Check if name is empty
   if (name == "") {
-    warning("name cannot be an empty string, defaulted to 'untitled'")
+    warning("name cannot be an empty string, defaulted to 'my_wordcloud'")
   }
 
   # Select data based on category
