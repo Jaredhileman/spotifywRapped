@@ -49,10 +49,6 @@ my_artist_frequency <- function(data = data.frame(),
   data_sorted <- df[order(df$Freq, decreasing = TRUE), ]
 
   new_df <- head(data_sorted, 10)
-  new_df$Var1 <- factor(new_df$Var1, levels =
-                          new_df$Var1[order(new_df$Freq, decreasing = TRUE)],
-                        ordered = TRUE)
-
 
   top_artist <- new_df$Var1[new_df$Freq == max(new_df$Freq)]
   number_song <- new_df$Freq[new_df$Var1 == top_artist]
@@ -83,6 +79,10 @@ my_artist_frequency <- function(data = data.frame(),
       new_df$Var1[i] <- new_label
     }
   }
+
+  new_df$Var1 <- factor(new_df$Var1, levels =
+                          new_df$Var1[order(new_df$Freq, decreasing = TRUE)],
+                        ordered = TRUE)
 
   # plot
   artist_frequency_plot <- ggplot2::ggplot(
