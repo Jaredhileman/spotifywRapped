@@ -59,11 +59,15 @@ my_top_five <- function(time, vibe, category = "artists", name = "my_top_five",
 
   mini_image <- magick::image_read(image_url)
   mini_image <- magick::image_resize(mini_image, "530x530")
+  names <- dataset$name[2:5]
+  if (any(is.na(names))) {
+    names[is.na(names)] <- ""
+  }
 
   box_coordinates <- data.frame(
     x = rep(400, times = 4) / 1080,
     y = (1920 - c(1140, 1270, 1400, 1530) - 42) / 1920,
-    label = dataset$name[2:5]
+    label = names
   )
 
   file_name <- paste0(name, ".png")
@@ -109,6 +113,7 @@ generate_image <- function(postables_path, background, mini_image, vibe,
     xlab = "", ylab = "", main = "", bty = "n", ann = FALSE
   )
 
+  print(coordinates$label)
   for (label in coordinates$label) {
     if (nchar(label) > 30) {
       new_label <- paste0(substr(label, 1, 30), "...")
