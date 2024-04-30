@@ -114,7 +114,7 @@ Parameter options:
 
 ```{r artist_frequency_top}
 
-artist_frequency_top_demo <- artist_frequency(
+artist_frequency_top_demo <- my_artist_frequency(
   category = "top", vibe = "soft",
   name = "Top Tracks Artist Frequency",
   saveto = temp_save
@@ -128,7 +128,7 @@ Here is an example of the artist frequency graphic generated for the user's top 
 ![](`r artist_frequency_top_demo`){width=450px height=800px}
 
 ```{r artist_frequency_saved}
-artist_frequency_saved_demo <- artist_frequency(
+artist_frequency_saved_demo <- my_artist_frequency(
   category = "saved", vibe = "neon",
   name = "Saved Tracks Artist Frequency",
   saveto = temp_save
